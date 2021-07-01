@@ -37,5 +37,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <uses-permission android:name="android.permission.READ_CONTACTS"/>
+       <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+       <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     </application>
 </manifest>
