@@ -1,5 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.check_on_them_app">
+    <!--
+    Permissions for getting, reading, and writing contact.
+    -->
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
    <application
         android:label="check_on_them_app"
         android:icon="@mipmap/ic_launcher">
@@ -37,8 +43,5 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-       <uses-permission android:name="android.permission.READ_CONTACTS"/>
-       <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
-       <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     </application>
 </manifest>
