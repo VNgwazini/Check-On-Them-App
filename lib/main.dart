@@ -14,20 +14,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //text in top bar of app
       title: 'Check On Them - App',
-      //content under the title in the main area
-      // home: SeeContactsButton(),
-      // home: Scaffold(
-      //   appBar: AppBar(
-      //     title: Text('Check On Them - App'),
-      //     backgroundColor: Colors.transparent,
-      //     elevation: 0,
-      //   ),
-      //   body: Container(
-      //     alignment: Alignment.center,
-      //     padding: EdgeInsets.all(16.0),
-      //     child: SeeContactsButton(),
-      //   ),
-      // ),
       home: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
@@ -82,7 +68,6 @@ class SeeContactsButton extends StatelessWidget {
                   ));
         }
       },
-      // child: Container(child: Text('See Contacts')),
       child: Text(
           'Hello!\n\nReady to reconnect with the people in your contacts?\n\nThen tap here to begin!',
           textScaleFactor: 1.25,
@@ -147,26 +132,6 @@ class _ContactsPageState extends State<ContactsPage> {
         backgroundColor: Colors.amber,
       ),
       body: _contacts != null
-          //if we have contacts make the body a list view
-          // ? ListView.builder(
-          //   //itemCount is zero if _contacts is null
-          //   itemCount: _contacts?.length ?? 0,
-          //   itemBuilder: (BuildContext context, int index){
-          //     Contact contact = _contacts.elementAt(index);
-          //     return ListTile(
-          //       contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
-          //       leading: (contact.avatar != null && contact.avatar!.isNotEmpty)
-          //         ? CircleAvatar(
-          //           backgroundImage: MemoryImage(contact.avatar!),
-          //         )
-          //         : CircleAvatar(
-          //           child: Text(contact.initials()),
-          //           backgroundColor: Theme.of(context).accentColor,
-          //         ),
-          //       title: Text(contact.displayName ?? ''),
-          //     );
-          //   },
-          // )
           ? Container(
               margin: const EdgeInsets.all(20),
               alignment: Alignment.center,
@@ -233,10 +198,6 @@ class _ContactsPageState extends State<ContactsPage> {
                         ),
                       ],
                     ),
-                    // new Flexible(
-                    //   child: Image.asset('assets/headshot.png',
-                    //       alignment: Alignment.bottomCenter),
-                    // )
                     // Image.asset('assets/card-sample-image-2.jpg'),
                   ],
                 ),
