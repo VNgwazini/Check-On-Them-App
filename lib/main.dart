@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       home: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
-              //https://media.giphy.com/media/TJxrHj7AurjqljHSv2/giphy.gif
+                //https://media.giphy.com/media/TJxrHj7AurjqljHSv2/giphy.gif
                 image: new AssetImage("assets/dog_On_phone.webp"),
                 fit: BoxFit.fill)),
         child: Scaffold(
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           ),
           body: Container(
             alignment: Alignment.bottomRight,
-            padding: EdgeInsets.fromLTRB(100.0,100.0,20,20),
+            padding: EdgeInsets.fromLTRB(100.0, 100.0, 20, 20),
             child: SeeContactsButton(),
           ),
           backgroundColor: Colors.transparent,
@@ -71,8 +71,7 @@ class SeeContactsButton extends StatelessWidget {
       child: Text(
           'Hello!\n\nReady to reconnect with the people in your contacts?\n\nThen tap here to begin!',
           textScaleFactor: 1.25,
-          textAlign: TextAlign.center
-      ),
+          textAlign: TextAlign.center),
       padding: const EdgeInsets.all(16.0),
       color: Colors.amber,
     );
@@ -126,84 +125,94 @@ class _ContactsPageState extends State<ContactsPage> {
     String contactName = randomContact.displayName.toString();
     String contactPhoneNumber = randomContact.phones!.first.value.toString();
 
-    return Scaffold(
-      appBar: AppBar(
-        title: (Text("Today's Contact Suggestion")),
-        backgroundColor: Colors.amber,
-      ),
-      body: _contacts != null
-          ? Container(
-              margin: const EdgeInsets.all(20),
-              alignment: Alignment.center,
-              child: Card(
-                color: Colors.amber,
-                clipBehavior: Clip.antiAlias,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ListTile(
-                      leading: (randomContact.avatar != null &&
-                              randomContact.avatar!.isNotEmpty)
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  MemoryImage(randomContact.avatar!),
-                            )
-                          : CircleAvatar(
-                              child: Text(randomContact.initials()),
-                              backgroundColor: Theme.of(context).accentColor,
-                            ),
-                      title: Text(contactName ?? ''),
-                      subtitle: Text(
-                        contactPhoneNumber,
-                        style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                      ),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Center(
-                          child: Text(
-                            "Feel like catching up with " +
-                                contactName +
-                                "?\n\nCheck On Them! ",
+    return Container(
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+                //https://media.giphy.com/media/TJxrHj7AurjqljHSv2/giphy.gif
+                image: new AssetImage("assets/dog_On_phone.webp"),
+                fit: BoxFit.fill)),
+        child: Scaffold(
+          appBar: AppBar(
+            title: (Text("Today's Contact Suggestion")),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          body: _contacts != null
+              ? Container(
+                  alignment: Alignment.bottomRight,
+                  padding: EdgeInsets.fromLTRB(100.0, 100.0, 0, 0),
+                  child: Card(
+                    color: Colors.amber,
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListTile(
+                          leading: (randomContact.avatar != null &&
+                                  randomContact.avatar!.isNotEmpty)
+                              ? CircleAvatar(
+                                  backgroundImage:
+                                      MemoryImage(randomContact.avatar!),
+                                )
+                              : CircleAvatar(
+                                  child: Text(randomContact.initials()),
+                                  backgroundColor:
+                                      Theme.of(context).accentColor,
+                                ),
+                          title: Text(contactName ?? ''),
+                          subtitle: Text(
+                            contactPhoneNumber,
                             style:
                                 TextStyle(color: Colors.black.withOpacity(0.6)),
-                            textScaleFactor: 1.5,
-                            textAlign: TextAlign.center,
-                          ),
-                        )),
-                    ButtonBar(
-                      alignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        FlatButton(
-                          textColor: const Color(0xFF6200EE),
-                          onPressed: () {
-                            // Perform some action
-                          },
-                          child: IconButton(
-                            onPressed: () =>
-                                launch('tel:' + contactPhoneNumber),
-                            icon: Icon(Icons.phone_forwarded),
                           ),
                         ),
-                        FlatButton(
-                          textColor: const Color(0xFF6200EE),
-                          onPressed: () {
-                            // Perform some action
-                          },
-                          child: IconButton(
-                            onPressed: () =>
-                                launch('sms:' + contactPhoneNumber),
-                            icon: Icon(Icons.textsms_outlined),
-                          ),
+                        Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Center(
+                              child: Text(
+                                "Feel like catching up with " +
+                                    contactName +
+                                    "?\n\nCheck On Them! ",
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6)),
+                                textScaleFactor: 1.0,
+                                textAlign: TextAlign.center,
+                              ),
+                            )),
+                        ButtonBar(
+                          alignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            FlatButton(
+                              textColor: const Color(0xFF6200EE),
+                              onPressed: () {
+                                // Perform some action
+                              },
+                              child: IconButton(
+                                onPressed: () =>
+                                    launch('tel:' + contactPhoneNumber),
+                                icon: Icon(Icons.phone_forwarded),
+                              ),
+                            ),
+                            FlatButton(
+                              textColor: const Color(0xFF6200EE),
+                              onPressed: () {
+                                // Perform some action
+                              },
+                              child: IconButton(
+                                onPressed: () =>
+                                    launch('sms:' + contactPhoneNumber),
+                                icon: Icon(Icons.textsms_outlined),
+                              ),
+                            ),
+                          ],
                         ),
+                        // Image.asset('assets/card-sample-image-2.jpg'),
                       ],
                     ),
-                    // Image.asset('assets/card-sample-image-2.jpg'),
-                  ],
-                ),
-              ),
-            )
-          : Center(child: const CircularProgressIndicator()),
-    );
+                  ),
+                )
+              : Center(child: const CircularProgressIndicator()),
+          backgroundColor: Colors.transparent,
+        ));
   }
 }
