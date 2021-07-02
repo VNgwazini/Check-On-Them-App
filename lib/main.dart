@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+//app icon = <a href='https://www.freepik.com/photos/technology'>Technology photo created by wayhomestudio - www.freepik.com</a>
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       //text in top bar of app
-      title: 'Check On Them - App',
+      title: 'Check On Them!',
       home: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
@@ -22,14 +22,14 @@ class MyApp extends StatelessWidget {
                 fit: BoxFit.fill)),
         child: Scaffold(
           appBar: AppBar(
-            title: Text('Check On Them - App'),
+            title: Text('Check On Them!'),
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
           body: Container(
-            alignment: Alignment.bottomRight,
-            padding: EdgeInsets.fromLTRB(100.0, 100.0, 20, 20),
-            child: SeeContactsButton(),
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
+            child: HomeScreen(),
           ),
           backgroundColor: Colors.transparent,
         ),
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SeeContactsButton extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
@@ -69,7 +69,7 @@ class SeeContactsButton extends StatelessWidget {
         }
       },
       child: Text(
-          'Hello!\n\nReady to reconnect with the people in your contacts?\n\nThen tap here to begin!',
+          'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
           textScaleFactor: 1.25,
           textAlign: TextAlign.center),
       padding: const EdgeInsets.all(16.0),
@@ -106,7 +106,10 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   void initState() {
-    getContacts();
+    getContacts().whenComplete((){
+      setState(() {
+      });
+    });
     super.initState();
   }
 
@@ -139,8 +142,8 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
           body: _contacts != null
               ? Container(
-                  alignment: Alignment.bottomRight,
-                  padding: EdgeInsets.fromLTRB(100.0, 100.0, 0, 0),
+            alignment: Alignment.center,
+            padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
                   child: Card(
                     color: Colors.amber,
                     clipBehavior: Clip.antiAlias,
