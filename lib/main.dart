@@ -16,13 +16,36 @@ class MyApp extends StatelessWidget {
       title: 'Check On Them - App',
       //content under the title in the main area
       // home: SeeContactsButton(),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Check On Them - App'),
-          backgroundColor: Colors.amber,
-        ),
-        body: Center(
-          child: SeeContactsButton(),
+      // home: Scaffold(
+      //   appBar: AppBar(
+      //     title: Text('Check On Them - App'),
+      //     backgroundColor: Colors.transparent,
+      //     elevation: 0,
+      //   ),
+      //   body: Container(
+      //     alignment: Alignment.center,
+      //     padding: EdgeInsets.all(16.0),
+      //     child: SeeContactsButton(),
+      //   ),
+      // ),
+      home: Container(
+        decoration: new BoxDecoration(
+            image: new DecorationImage(
+              //https://media.giphy.com/media/TJxrHj7AurjqljHSv2/giphy.gif
+                image: new AssetImage("assets/dog_On_phone.webp"),
+                fit: BoxFit.fill)),
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('Check On Them - App'),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+          ),
+          body: Container(
+            alignment: Alignment.bottomRight,
+            padding: EdgeInsets.fromLTRB(100.0,100.0,20,20),
+            child: SeeContactsButton(),
+          ),
+          backgroundColor: Colors.transparent,
         ),
       ),
     );
@@ -61,8 +84,10 @@ class SeeContactsButton extends StatelessWidget {
       },
       // child: Container(child: Text('See Contacts')),
       child: Text(
-          'Hello!\n\nReady to reconnect with the people in your contacts?\n\n\nThen tap anywhere on the screen to begin!',
-          textScaleFactor: 3.0),
+          'Hello!\n\nReady to reconnect with the people in your contacts?\n\nThen tap here to begin!',
+          textScaleFactor: 1.25,
+          textAlign: TextAlign.center
+      ),
       padding: const EdgeInsets.all(16.0),
       color: Colors.amber,
     );
