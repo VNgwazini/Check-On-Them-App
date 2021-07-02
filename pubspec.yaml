@@ -31,10 +31,17 @@ dependencies:
   permission_handler: ^8.1.2
   contacts_service: ^0.6.1
   url_launcher: ^6.0.8
+  flutter_launcher_name: ^0.0.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_name: "^0.0.1"
+
+flutter_launcher_name:
+  name: "Check On Them"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
