@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:contacts_service/contacts_service.dart';
 
 
 void main() => runApp(MyApp());
@@ -12,67 +13,19 @@ class MyApp extends StatelessWidget {
       //text in top bar of app
       title: 'Check On Them - App',
       //content under the title in the main area
-      home: SeeContactsButton(),
+      // home: SeeContactsButton(),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Check On Them - App'),
+          backgroundColor: Colors.amber,
+        ),
+        body: Center(
+          child: SeeContactsButton(),
+        ),
+      ),
     );
   }
 }
-// //structure, displays a stateful widget
-// class RandomWords extends StatefulWidget {
-//   const RandomWords({Key? key}) : super(key: key);
-//
-//   @override
-//   _RandomWordsState createState() => _RandomWordsState();
-// }
-// //content that populate structure, aka our stateful widget's state
-// class _RandomWordsState extends State<RandomWords> {
-//   //leading _ means this variable is private to class
-//   //saves suggestions word parings
-//   final _suggestions = <WordPair>[];
-//   final _biggerFont = const TextStyle(fontSize: 18.0);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Startup Name Generator'),
-//       ),
-//       body: _buildSuggestions(),
-//     );
-//   }
-//
-// //builds listview that displays suggestions
-//   Widget _buildSuggestions() {
-//     return ListView.builder(
-//       padding: const EdgeInsets.all(16.0),
-//       //callback called once per suggested word pairing and places each suggestion into a listTile row;
-//       itemBuilder: (context, i) {
-//         if(i.isOdd) return const Divider();
-//
-//         //we divide by do to determine how many pairs we have
-//         final index = i ~/ 2;
-//         //if we reach the end of out pairings list
-//         if(index >= _suggestions.length){
-//           //make 10 more
-//           _suggestions.addAll(generateWordPairs().take(10));
-//         }
-//         return _buildRow(_suggestions[index]);
-//       }
-//     );
-//   }
-//
-//   //builds each row element which is a tile with text on it
-//   Widget _buildRow(WordPair pair){
-//     //create a tile item
-//     return ListTile(
-//       title: Text(
-//         //what the tile says
-//         pair.asPascalCase,
-//         //the text stye is, similar to style={{CSS}} in react
-//         style: _biggerFont,
-//       ),
-//     );
-//   }
-// }
 
 class SeeContactsButton  extends StatelessWidget {
 
@@ -85,6 +38,10 @@ class SeeContactsButton  extends StatelessWidget {
           //check if permission status is granted
           if(permissionStatus == PermissionStatus.granted){
             //access contacts here
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactsPage())
+            );
           }
           //if permission is not granted, then show a dialog asking the user to grant access
           else{
@@ -103,7 +60,10 @@ class SeeContactsButton  extends StatelessWidget {
             );
           }
         },
-      child: Container(child: Text('See Contacts')),
+      // child: Container(child: Text('See Contacts')),
+      child: Text('Hello!\n\nReady to reconnect with the people in your contacts?\n\n\nThen tap anywhere on the screen to begin!', textScaleFactor: 3.0),
+      padding: const EdgeInsets.all(16.0),
+      color: Colors.amber,
     );
   }
 
@@ -112,7 +72,7 @@ class SeeContactsButton  extends StatelessWidget {
     //specify and store the type of permission we expect to store in our permission object
     final PermissionStatus permission = await Permission.contacts.status;
     //if the permission is neither granted or denied
-    if(permission != PermissionStatus.granted && permission != PermissionStatus.denied){
+    if(permission != PermissionStatus.granted){
       //map the permission to it corresponding status
       final Map<Permission, PermissionStatus> permissionStatus =
           await [Permission.contacts].request();
@@ -124,6 +84,61 @@ class SeeContactsButton  extends StatelessWidget {
       return permission;
     }
   }
+}
+
+class ContactsPage extends StatefulWidget {
+
+  @override
+  _ContactsPageState createState() => _ContactsPageState();
+}
+
+class _ContactsPageState extends State<ContactsPage> {
+  late Iterable<Contact> _contacts;
+
+  @override
+  void initState(){
+    getContacts();
+    super.initState();
+  }
+
+  Future<void> getContacts() async{
+    final Iterable<Contact> contacts = await ContactsService.getContacts();
+    setState(() {
+      _contacts = contacts;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context){
+    return Scaffold(
+      appBar: AppBar(
+        title: (Text('Contacts')),
+      ),
+      body: _contacts != null
+      //if we have contacts make the body a list view
+      ? ListView.builder(
+        //itemCount is zero if _contacts is null
+        itemCount: _contacts?.length ?? 0,
+        itemBuilder: (BuildContext context, int index){
+          Contact contact = _contacts.elementAt(index);
+          return ListTile(
+            contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 18),
+            leading: (contact.avatar != null && contact.avatar!.isNotEmpty)
+              ? CircleAvatar(
+                backgroundImage: MemoryImage(contact.avatar!),
+              )
+              : CircleAvatar(
+                child: Text(contact.initials()),
+                backgroundColor: Theme.of(context).accentColor,
+              ),
+            title: Text(contact.displayName ?? ''),
+          );
+        },
+      )
+    : Center(child: const CircularProgressIndicator()),
+    );
+  }
+
 }
 
 
