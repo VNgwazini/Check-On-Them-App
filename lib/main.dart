@@ -23,6 +23,11 @@ class MyApp extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text('Check On Them!'),
+            leading: CircleAvatar(
+                child: Image.asset(
+                  "android/app/src/main/ic_launcher-playstore.png",
+                  fit: BoxFit.scaleDown,
+                )),
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
@@ -140,7 +145,7 @@ class _ContactsPageState extends State<ContactsPage> {
             backgroundColor: Colors.transparent,
             elevation: 0,
           ),
-          body: _contacts != null
+          body: randomContact != null
               ? Container(
             alignment: Alignment.center,
             padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
