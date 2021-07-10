@@ -307,248 +307,285 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   Future<Iterable<Contact>> _getContacts() async {
-    _contacts = await ContactsService.getContacts();
+    _contacts = await ContactsService.getContacts(
+      //make call faster by excluding thumbnails
+      withThumbnails: false,
+    );
     return _contacts;
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-        child: FutureBuilder(
-          future: _getContacts(),
-          builder: (BuildContext context, AsyncSnapshot snapshot){
-            print(snapshot.data.toString().length);
-            if(snapshot.data == null){
-              return Container(
+      child: FutureBuilder(
+        future: _getContacts(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          // print(snapshot.data.toString().length);
+          if (snapshot.data == null) {
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: CircularProgressIndicator()),
+                ],
+              ),
+            );
+          } else {
+
+            print("\n\n");
+            //First Suggestion
+            var random = new Random();
+            var randomInt1 = random.nextInt(snapshot.data.toString().length - 1);
+            var randomInt2 = random.nextInt(snapshot.data.toString().length - 1);
+            Contact randomContact = new Contact();
+            Contact randomContact2 = new Contact();
+
+            if( snapshot.data.elementAt(randomInt1).phones!.isNotEmpty ){
+              //good value
+              randomContact = snapshot.data
+                  .elementAt(randomInt1);
+            }else{
+              while(snapshot.data.elementAt(randomInt1).phones!.isEmpty){
+                if(snapshot.data.elementAt(randomInt1).phones!.isNotEmpty){
+                  break;
+                }else{
+                  //recalculate random index
+                  randomInt1 = random.nextInt(snapshot.data.toString().length - 1);
+                }
+              }
+              //update suggestion with good value
+              randomContact = snapshot.data.elementAt(randomInt1);
+            }
+
+
+            if( snapshot.data.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
+              //good value
+              randomContact2 = snapshot.data
+                  .elementAt(randomInt2);
+            }else{
+              while(snapshot.data.elementAt(randomInt2).phones!.isEmpty){
+                if(snapshot.data.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
+                  break;
+                }else{
+                  //recalculate random index
+                  randomInt2 = random.nextInt(snapshot.data.toString().length - 1);
+                }
+              }
+              //update suggestion with good value
+              randomContact2 = snapshot.data.elementAt(randomInt2);
+            }
+
+            String contactName = randomContact.displayName.toString();
+            String contactPhoneNumber =
+                randomContact.phones!.first.value.toString();
+
+            String contactName2 = randomContact2.displayName.toString();
+            String contactPhoneNumber2 =
+                randomContact2.phones!.first.value.toString();
+
+            return Scaffold(
+              appBar: AppBar(
+                title: (Text(
+                  "Home",
+                  style: TextStyle(color: Colors.white),
+                )),
+                backgroundColor: Colors.black,
+                elevation: 0,
+              ),
+              body: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 100.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  // mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Center(
-                        child: CircularProgressIndicator()
-                    ),
-                    Container(
-                      child: Text("Building your suggestions...",
+                    Text(
+                      "Your Contact Suggestions",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.w700, color: Colors.white),
+                      textScaleFactor: 1.75,
+                      textAlign: TextAlign.center,
+                    ),
+                    Card(
+                      color: Colors.white,
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: (randomContact.avatar != null &&
+                                    randomContact.avatar!.isNotEmpty)
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        MemoryImage(randomContact.avatar!),
+                                  )
+                                : CircleAvatar(
+                                    child: Text(randomContact.initials()),
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
+                                  ),
+                            title: Text(
+                              contactName,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textScaleFactor: 1.50,
+                            ),
+                            subtitle: Text(
+                              contactPhoneNumber,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black.withOpacity(0.6)),
+                              textScaleFactor: 1.25,
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Center(
+                                child: contactName.contains(" ") ? Text(
+                                  "Feel like catching up with " +
+                                      contactName.substring(
+                                          0,
+                                          randomContact.displayName!
+                                              .indexOf(" ")) +
+                                      "?\n\nCheck On Them! ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textScaleFactor: 1.25,
+                                  textAlign: TextAlign.center,
+                                )
+                                : Text(
+                                  "Feel like catching up with " +
+                                      contactName +
+                                      "?\n\nCheck On Them! ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textScaleFactor: 1.25,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              FlatButton(
+                                textColor: Colors.blue,
+                                onPressed: () {
+                                  // Perform some action
+                                },
+                                child: IconButton(
+                                  onPressed: () =>
+                                      launch('tel:' + contactPhoneNumber),
+                                  icon: Icon(Icons.phone_forwarded),
+                                ),
+                              ),
+                              FlatButton(
+                                textColor: Colors.blue,
+                                onPressed: () {
+                                  // Perform some action
+                                },
+                                child: IconButton(
+                                  onPressed: () =>
+                                      launch('sms:' + contactPhoneNumber),
+                                  icon: Icon(Icons.textsms_outlined),
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
+                        ],
                       ),
-                        textScaleFactor: 0.5,
+                    ),
+                    Card(
+                      color: Colors.white,
+                      clipBehavior: Clip.antiAlias,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ListTile(
+                            leading: (randomContact2.avatar != null &&
+                                    randomContact2.avatar!.isNotEmpty)
+                                ? CircleAvatar(
+                                    backgroundImage:
+                                        MemoryImage(randomContact2.avatar!),
+                                  )
+                                : CircleAvatar(
+                                    child: Text(randomContact2.initials()),
+                                    backgroundColor:
+                                        Theme.of(context).accentColor,
+                                  ),
+                            title: Text(
+                              contactName2,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textScaleFactor: 1.50,
+                            ),
+                            subtitle: Text(
+                              contactPhoneNumber2,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black.withOpacity(0.6)),
+                              textScaleFactor: 1.25,
+                            ),
+                          ),
+                          Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Center(
+                                child: contactName2.contains(" ") ? Text(
+                                  "Feel like catching up with " +
+                                      contactName2.substring(
+                                          0,
+                                          randomContact2.displayName!
+                                              .indexOf(" ")) +
+                                      "?\n\nCheck On Them! ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textScaleFactor: 1.25,
+                                  textAlign: TextAlign.center,
+                                )
+                                    : Text(
+                                  "Feel like catching up with " +
+                                      contactName2 +
+                                      "?\n\nCheck On Them! ",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  textScaleFactor: 1.25,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )),
+                          ButtonBar(
+                            alignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              FlatButton(
+                                textColor: Colors.blue,
+                                onPressed: () {
+                                  // Perform some action
+                                },
+                                child: IconButton(
+                                  onPressed: () =>
+                                      launch('tel:' + contactPhoneNumber2),
+                                  icon: Icon(Icons.phone_forwarded),
+                                ),
+                              ),
+                              FlatButton(
+                                textColor: Colors.blue,
+                                onPressed: () {
+                                  // Perform some action
+                                },
+                                child: IconButton(
+                                  onPressed: () =>
+                                      launch('sms:' + contactPhoneNumber2),
+                                  icon: Icon(Icons.textsms_outlined),
+                                ),
+                              ),
+                            ],
+                          ),
+                          // Image.asset('assets/card-sample-image-2.jpg'),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              );
-            }else{
-
-              //First Suggestion
-              var random = new Random();
-              Contact randomContact =
-              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
-              //recalculate suggestion if null
-              if(randomContact== null){
-                while(randomContact == null){
-                  randomContact =
-                      snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
-                  if(randomContact.displayName != null){
-                    break;
-                  }
-                }
-              }
-              String contactName = randomContact.displayName.toString();
-              String contactPhoneNumber = randomContact.phones!.first.value.toString();
-
-              //Second Suggestion
-              Contact randomContact2 =
-              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
-              //recalculate suggestion if null
-              if(randomContact2 == null){
-                while(randomContact2.displayName == null){
-                  randomContact2 =
-                      snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
-                  if(randomContact2.displayName != null){
-                    break;
-                  }
-                }
-              }
-              String contactName2 = randomContact2.displayName.toString();
-              String contactPhoneNumber2 = randomContact2.phones!.first.value.toString();
-
-
-              return Scaffold(
-                appBar: AppBar(
-                  title: (Text(
-                    "Home",
-                    style: TextStyle(color: Colors.white),
-                  )),
-                  backgroundColor: Colors.black,
-                  elevation: 0,
-                ),
-                body: Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 100.0),
-                  child: Column(
-                    // mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Your Contact Suggestions",
-                        style:
-                        TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                        textScaleFactor: 1.75,
-                        textAlign: TextAlign.center,
-                      ),
-                      Card(
-                        color: Colors.white,
-                        clipBehavior: Clip.antiAlias,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
-                              leading: (randomContact.avatar != null &&
-                                  randomContact.avatar!.isNotEmpty)
-                                  ? CircleAvatar(
-                                backgroundImage: MemoryImage(randomContact.avatar!),
-                              )
-                                  : CircleAvatar(
-                                child: Text(randomContact.initials()),
-                                backgroundColor: Theme.of(context).accentColor,
-                              ),
-                              title: Text(
-                                contactName,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                textScaleFactor: 1.50,
-                              ),
-                              subtitle: Text(
-                                contactPhoneNumber,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black.withOpacity(0.6)),
-                                textScaleFactor: 1.25,
-                              ),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Text(
-                                    "Feel like catching up with " +
-                                        contactName.substring(0,randomContact2.displayName!.indexOf(" ")) +
-                                        "?\n\nCheck On Them! ",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                    textScaleFactor: 1.25,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )),
-                            ButtonBar(
-                              alignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                FlatButton(
-                                  textColor: Colors.blue,
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  child: IconButton(
-                                    onPressed: () => launch('tel:' + contactPhoneNumber),
-                                    icon: Icon(Icons.phone_forwarded),
-                                  ),
-                                ),
-                                FlatButton(
-                                  textColor: Colors.blue,
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  child: IconButton(
-                                    onPressed: () => launch('sms:' + contactPhoneNumber),
-                                    icon: Icon(Icons.textsms_outlined),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
-                          ],
-                        ),
-                      ),
-                      Card(
-                        color: Colors.white,
-                        clipBehavior: Clip.antiAlias,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
-                              leading: (randomContact2.avatar != null &&
-                                  randomContact2.avatar!.isNotEmpty)
-                                  ? CircleAvatar(
-                                backgroundImage:
-                                MemoryImage(randomContact2.avatar!),
-                              )
-                                  : CircleAvatar(
-                                child: Text(randomContact2.initials()),
-                                backgroundColor: Theme.of(context).accentColor,
-                              ),
-                              title: Text(
-                                contactName2,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                textScaleFactor: 1.50,
-                              ),
-                              subtitle: Text(
-                                contactPhoneNumber2,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black.withOpacity(0.6)),
-                                textScaleFactor: 1.25,
-                              ),
-                            ),
-                            Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                  child: Text(
-                                    "Feel like catching up with " +
-                                        contactName2.substring(0,randomContact2.displayName!.indexOf(" ")) +
-                                        "?\n\nCheck On Them! ",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                    textScaleFactor: 1.25,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                )),
-                            ButtonBar(
-                              alignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                FlatButton(
-                                  textColor: Colors.blue,
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  child: IconButton(
-                                    onPressed: () => launch('tel:' + contactPhoneNumber2),
-                                    icon: Icon(Icons.phone_forwarded),
-                                  ),
-                                ),
-                                FlatButton(
-                                  textColor: Colors.blue,
-                                  onPressed: () {
-                                    // Perform some action
-                                  },
-                                  child: IconButton(
-                                    onPressed: () => launch('sms:' + contactPhoneNumber2),
-                                    icon: Icon(Icons.textsms_outlined),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Image.asset('assets/card-sample-image-2.jpg'),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  color: Colors.black,
-                ),
-                // : Center(child: const CircularProgressIndicator()),
-                backgroundColor: Colors.black,
-              );
-            }
-          },
-        ),
+                color: Colors.black,
+              ),
+              // : Center(child: const CircularProgressIndicator()),
+              backgroundColor: Colors.black,
+            );
+          }
+        },
+      ),
     );
   }
 }
