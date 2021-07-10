@@ -5,7 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 //app icon = <a href='https://www.freepik.com/photos/technology'>Technology photo created by wayhomestudio - www.freepik.com</a>
+// <a href='https://www.freepik.com/photos/human'>Human photo created by wayhomestudio - www.freepik.com</a>
+// <a href='https://www.freepik.com/photos/people'>People photo created by wayhomestudio - www.freepik.com</a>
+// <a href='https://www.freepik.com/photos/people'>People photo created by wayhomestudio - www.freepik.com</a>
+// <a href='https://www.freepik.com/photos/book'>Book photo created by wayhomestudio - www.freepik.com</a>
+// <a href='https://www.freepik.com/photos/people'>People photo created by wayhomestudio - www.freepik.com</a>
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -14,30 +20,21 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       //text in top bar of app
       title: 'Check On Them!',
-      home: Container(
-        decoration: new BoxDecoration(
-            image: new DecorationImage(
-                //https://media.giphy.com/media/TJxrHj7AurjqljHSv2/giphy.gif
-                image: new AssetImage("assets/dog_On_phone.webp"),
-                fit: BoxFit.fill)),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('Check On Them!'),
-            leading: CircleAvatar(
-                child: Image.asset(
-                  "android/app/src/main/ic_launcher-playstore.png",
-                  fit: BoxFit.scaleDown,
-                )),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Check On Them!',
+            style: TextStyle(color: Colors.black),
           ),
-          body: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
-            child: HomeScreen(),
-          ),
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
+          elevation: 0,
         ),
+        body: Container(
+          alignment: Alignment.center,
+          padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
+          child: HomeScreen(),
+        ),
+        backgroundColor: Colors.white,
       ),
     );
   }
@@ -46,39 +43,232 @@ class MyApp extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      onPressed: () async {
-        //request permission via async function and store response in appropriate object
-        final PermissionStatus permissionStatus = await _getPermission();
-        //check if permission status is granted
-        if (permissionStatus == PermissionStatus.granted) {
-          //access contacts here
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ContactsPage()));
-        }
-        //if permission is not granted, then show a dialog asking the user to grant access
-        else {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) => CupertinoAlertDialog(
-                    title: Text('Permission error'),
-                    content: Text(
-                        'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
-                    actions: <Widget>[
-                      CupertinoDialogAction(
-                        child: Text('OK'),
-                        onPressed: () => Navigator.of(context).pop(),
-                      )
-                    ],
-                  ));
-        }
-      },
-      child: Text(
-          'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
-          textScaleFactor: 1.25,
-          textAlign: TextAlign.center),
-      padding: const EdgeInsets.all(16.0),
-      color: Colors.amber,
+    return Container(
+      color: Colors.white,
+      child:  Column(
+        children: [
+          Padding(
+              padding: EdgeInsets.fromLTRB(10,16,10,16),
+            child:           Text(
+              "What type of contact suggestions are you looking for today?",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+              ),
+              textScaleFactor: 1.5,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Center(
+            child: GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 16.0,
+              shrinkWrap: true,
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new IconButton(
+                      icon: Image(
+                        image: AssetImage(
+                            'assets/CheckOnThem_Friend.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                      iconSize: 150,
+                      onPressed: () async {
+                        //request permission via async function and store response in appropriate object
+                        final PermissionStatus permissionStatus =
+                        await _getPermission();
+                        //check if permission status is granted
+                        if (permissionStatus == PermissionStatus.granted) {
+                          //access contacts here
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ContactsPage()));
+                        }
+                        //if permission is not granted, then show a dialog asking the user to grant access
+                        else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CupertinoAlertDialog(
+                                    title: Text('Permission error'),
+                                    content: Text(
+                                        'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      )
+                                    ],
+                                  ));
+                        }
+                      },
+                    ),
+                    Text(
+                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        "Friend",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.center),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new IconButton(
+                      icon: Image(
+                        image: AssetImage(
+                            'assets/CheckOnThem_Family.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                      iconSize: 150,
+                      onPressed: () async {
+                        //request permission via async function and store response in appropriate object
+                        final PermissionStatus permissionStatus =
+                        await _getPermission();
+                        //check if permission status is granted
+                        if (permissionStatus == PermissionStatus.granted) {
+                          //access contacts here
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ContactsPage()));
+                        }
+                        //if permission is not granted, then show a dialog asking the user to grant access
+                        else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CupertinoAlertDialog(
+                                    title: Text('Permission error'),
+                                    content: Text(
+                                        'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      )
+                                    ],
+                                  ));
+                        }
+                      },
+                    ),
+                    Text(
+                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        "Family",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.center),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new IconButton(
+                      icon: Image(
+                        image: AssetImage(
+                            'assets/CheckOnThem_Colleague.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                      iconSize: 150,
+                      onPressed: () async {
+                        //request permission via async function and store response in appropriate object
+                        final PermissionStatus permissionStatus =
+                        await _getPermission();
+                        //check if permission status is granted
+                        if (permissionStatus == PermissionStatus.granted) {
+                          //access contacts here
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ContactsPage()));
+                        }
+                        //if permission is not granted, then show a dialog asking the user to grant access
+                        else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CupertinoAlertDialog(
+                                    title: Text('Permission error'),
+                                    content: Text(
+                                        'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      )
+                                    ],
+                                  ));
+                        }
+                      },
+                    ),
+                    Text(
+                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        "Colleague",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.center),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new IconButton(
+                      icon: Image(
+                        image: AssetImage(
+                            'assets/CheckOnThem_SupriseMe.jpg'),
+                        fit: BoxFit.fill,
+                      ),
+                      iconSize: 150,
+                      onPressed: () async {
+                        //request permission via async function and store response in appropriate object
+                        final PermissionStatus permissionStatus =
+                        await _getPermission();
+                        //check if permission status is granted
+                        if (permissionStatus == PermissionStatus.granted) {
+                          //access contacts here
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ContactsPage()));
+                        }
+                        //if permission is not granted, then show a dialog asking the user to grant access
+                        else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CupertinoAlertDialog(
+                                    title: Text('Permission error'),
+                                    content: Text(
+                                        'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: Text('OK'),
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                      )
+                                    ],
+                                  ));
+                        }
+                      },
+                    ),
+                    Text(
+                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        "Suprise Me!",
+                        style: TextStyle(fontWeight: FontWeight.w700),
+                        textScaleFactor: 1.0,
+                        textAlign: TextAlign.center),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -111,9 +301,8 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   void initState() {
-    getContacts().whenComplete((){
-      setState(() {
-      });
+    getContacts().whenComplete(() {
+      setState(() {});
     });
     super.initState();
   }
@@ -147,8 +336,8 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
           body: randomContact != null
               ? Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
                   child: Card(
                     color: Colors.amber,
                     clipBehavior: Clip.antiAlias,
