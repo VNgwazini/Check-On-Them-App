@@ -369,7 +369,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             backgroundColor: Theme.of(context).accentColor,
                           ),
                     title: Text(
-                      contactName ?? '',
+                      contactName,
                       style: TextStyle(fontWeight: FontWeight.bold),
                       textScaleFactor: 1.50,
                     ),
@@ -386,7 +386,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: Center(
                         child: Text(
                           "Feel like catching up with " +
-                              contactName +
+                              contactName.substring(0,randomContact2.displayName!.indexOf(" ")) +
                               "?\n\nCheck On Them! ",
                           style: TextStyle(fontWeight: FontWeight.bold),
                           textScaleFactor: 1.25,
@@ -404,7 +404,6 @@ class _ContactsPageState extends State<ContactsPage> {
                         child: IconButton(
                           onPressed: () => launch('tel:' + contactPhoneNumber),
                           icon: Icon(Icons.phone_forwarded),
-                          iconSize: 32.0,
                         ),
                       ),
                       FlatButton(
@@ -415,7 +414,6 @@ class _ContactsPageState extends State<ContactsPage> {
                         child: IconButton(
                           onPressed: () => launch('sms:' + contactPhoneNumber),
                           icon: Icon(Icons.textsms_outlined),
-                          iconSize: 32.0,
                         ),
                       ),
                     ],
@@ -442,7 +440,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             backgroundColor: Theme.of(context).accentColor,
                           ),
                     title: Text(
-                      contactName2 ?? '',
+                      contactName2,
                       style: TextStyle(fontWeight: FontWeight.bold),
                       textScaleFactor: 1.50,
                     ),
@@ -459,7 +457,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       child: Center(
                         child: Text(
                           "Feel like catching up with " +
-                              contactName2 +
+                              contactName2.substring(0,randomContact2.displayName!.indexOf(" ")) +
                               "?\n\nCheck On Them! ",
                           style: TextStyle(fontWeight: FontWeight.bold),
                           textScaleFactor: 1.25,
@@ -477,7 +475,6 @@ class _ContactsPageState extends State<ContactsPage> {
                         child: IconButton(
                           onPressed: () => launch('tel:' + contactPhoneNumber2),
                           icon: Icon(Icons.phone_forwarded),
-                          iconSize: 32.0,
                         ),
                       ),
                       FlatButton(
@@ -488,7 +485,6 @@ class _ContactsPageState extends State<ContactsPage> {
                         child: IconButton(
                           onPressed: () => launch('sms:' + contactPhoneNumber2),
                           icon: Icon(Icons.textsms_outlined),
-                          iconSize: 32.0,
                         ),
                       ),
                     ],
