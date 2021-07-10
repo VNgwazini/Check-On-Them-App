@@ -344,12 +344,33 @@ class _ContactsPageState extends State<ContactsPage> {
               //First Suggestion
               var random = new Random();
               Contact randomContact =
-              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length));
+              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
+              //recalculate suggestion if null
+              if(randomContact== null){
+                while(randomContact == null){
+                  randomContact =
+                      snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
+                  if(randomContact.displayName != null){
+                    break;
+                  }
+                }
+              }
               String contactName = randomContact.displayName.toString();
               String contactPhoneNumber = randomContact.phones!.first.value.toString();
+
               //Second Suggestion
               Contact randomContact2 =
-              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length));
+              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
+              //recalculate suggestion if null
+              if(randomContact2 == null){
+                while(randomContact2.displayName == null){
+                  randomContact2 =
+                      snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length-1));
+                  if(randomContact2.displayName != null){
+                    break;
+                  }
+                }
+              }
               String contactName2 = randomContact2.displayName.toString();
               String contactPhoneNumber2 = randomContact2.phones!.first.value.toString();
 
