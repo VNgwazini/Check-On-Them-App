@@ -24,9 +24,9 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Check On Them!',
-            style: TextStyle(color: Colors.black),
+            style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.black,
           elevation: 0,
         ),
         body: Container(
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
           child: HomeScreen(),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
       ),
     );
   }
@@ -44,17 +44,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
-      child:  Column(
+      color: Colors.black,
+      child: Column(
         children: [
           Padding(
-              padding: EdgeInsets.fromLTRB(10,16,10,16),
-            child:           Text(
+            padding: EdgeInsets.fromLTRB(10, 16, 10, 16),
+            child: Text(
               "What type of contact suggestions are you looking for today?",
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-              ),
-              textScaleFactor: 1.5,
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+              textScaleFactor: 1.75,
               textAlign: TextAlign.center,
             ),
           ),
@@ -69,15 +68,14 @@ class HomeScreen extends StatelessWidget {
                   children: <Widget>[
                     new IconButton(
                       icon: Image(
-                        image: AssetImage(
-                            'assets/CheckOnThem_Friend.jpg'),
+                        image: AssetImage('assets/CheckOnThem_Friend.jpg'),
                         fit: BoxFit.fill,
                       ),
                       iconSize: 150,
                       onPressed: () async {
                         //request permission via async function and store response in appropriate object
                         final PermissionStatus permissionStatus =
-                        await _getPermission();
+                            await _getPermission();
                         //check if permission status is granted
                         if (permissionStatus == PermissionStatus.granted) {
                           //access contacts here
@@ -107,10 +105,11 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Text(
-                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
                         "Friend",
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.white),
+                        textScaleFactor: 1.5,
                         textAlign: TextAlign.center),
                   ],
                 ),
@@ -119,15 +118,14 @@ class HomeScreen extends StatelessWidget {
                   children: <Widget>[
                     new IconButton(
                       icon: Image(
-                        image: AssetImage(
-                            'assets/CheckOnThem_Family.jpg'),
+                        image: AssetImage('assets/CheckOnThem_Family.jpg'),
                         fit: BoxFit.fill,
                       ),
                       iconSize: 150,
                       onPressed: () async {
                         //request permission via async function and store response in appropriate object
                         final PermissionStatus permissionStatus =
-                        await _getPermission();
+                            await _getPermission();
                         //check if permission status is granted
                         if (permissionStatus == PermissionStatus.granted) {
                           //access contacts here
@@ -157,10 +155,11 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Text(
-                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
                         "Family",
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.white),
+                        textScaleFactor: 1.5,
                         textAlign: TextAlign.center),
                   ],
                 ),
@@ -169,15 +168,14 @@ class HomeScreen extends StatelessWidget {
                   children: <Widget>[
                     new IconButton(
                       icon: Image(
-                        image: AssetImage(
-                            'assets/CheckOnThem_Colleague.jpg'),
+                        image: AssetImage('assets/CheckOnThem_Colleague.jpg'),
                         fit: BoxFit.fill,
                       ),
                       iconSize: 150,
                       onPressed: () async {
                         //request permission via async function and store response in appropriate object
                         final PermissionStatus permissionStatus =
-                        await _getPermission();
+                            await _getPermission();
                         //check if permission status is granted
                         if (permissionStatus == PermissionStatus.granted) {
                           //access contacts here
@@ -207,10 +205,11 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Text(
-                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
                         "Colleague",
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.white),
+                        textScaleFactor: 1.5,
                         textAlign: TextAlign.center),
                   ],
                 ),
@@ -219,15 +218,14 @@ class HomeScreen extends StatelessWidget {
                   children: <Widget>[
                     new IconButton(
                       icon: Image(
-                        image: AssetImage(
-                            'assets/CheckOnThem_SupriseMe.jpg'),
+                        image: AssetImage('assets/CheckOnThem_SupriseMe.jpg'),
                         fit: BoxFit.fill,
                       ),
                       iconSize: 150,
                       onPressed: () async {
                         //request permission via async function and store response in appropriate object
                         final PermissionStatus permissionStatus =
-                        await _getPermission();
+                            await _getPermission();
                         //check if permission status is granted
                         if (permissionStatus == PermissionStatus.granted) {
                           //access contacts here
@@ -257,10 +255,11 @@ class HomeScreen extends StatelessWidget {
                       },
                     ),
                     Text(
-                      // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
+                        // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
                         "Suprise Me!",
-                        style: TextStyle(fontWeight: FontWeight.w700),
-                        textScaleFactor: 1.0,
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, color: Colors.white),
+                        textScaleFactor: 1.5,
                         textAlign: TextAlign.center),
                   ],
                 ),
@@ -316,100 +315,194 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   Widget build(BuildContext context) {
+    //First Suggestion
     var random = new Random();
     Contact randomContact =
         _contacts.elementAt(random.nextInt(_contacts.length));
     String contactName = randomContact.displayName.toString();
     String contactPhoneNumber = randomContact.phones!.first.value.toString();
+    //Second Suggestion
+    var random2 = new Random();
+    Contact randomContact2 =
+        _contacts.elementAt(random2.nextInt(_contacts.length));
+    String contactName2 = randomContact2.displayName.toString();
+    String contactPhoneNumber2 = randomContact2.phones!.first.value.toString();
 
     return Container(
-        decoration: new BoxDecoration(
-            image: new DecorationImage(
-                //https://media.giphy.com/media/TJxrHj7AurjqljHSv2/giphy.gif
-                image: new AssetImage("assets/dog_On_phone.webp"),
-                fit: BoxFit.fill)),
         child: Scaffold(
-          appBar: AppBar(
-            title: (Text("Today's Contact Suggestion")),
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-          ),
-          body: randomContact != null
-              ? Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.fromLTRB(20.0, 75.0, 20.0, 0.0),
-                  child: Card(
-                    color: Colors.amber,
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          leading: (randomContact.avatar != null &&
-                                  randomContact.avatar!.isNotEmpty)
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      MemoryImage(randomContact.avatar!),
-                                )
-                              : CircleAvatar(
-                                  child: Text(randomContact.initials()),
-                                  backgroundColor:
-                                      Theme.of(context).accentColor,
-                                ),
-                          title: Text(contactName ?? ''),
-                          subtitle: Text(
-                            contactPhoneNumber,
-                            style:
-                                TextStyle(color: Colors.black.withOpacity(0.6)),
+      appBar: AppBar(
+        title: (Text(
+          "Home",
+          style: TextStyle(color: Colors.white),
+        )),
+        backgroundColor: Colors.black,
+        elevation: 0,
+      ),
+      body: Container(
+        alignment: Alignment.center,
+        margin: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 100.0),
+        child: Column(
+          // mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Your Contact Suggestions",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+              textScaleFactor: 1.75,
+              textAlign: TextAlign.center,
+            ),
+            Card(
+              color: Colors.white,
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: (randomContact.avatar != null &&
+                            randomContact.avatar!.isNotEmpty)
+                        ? CircleAvatar(
+                            backgroundImage: MemoryImage(randomContact.avatar!),
+                          )
+                        : CircleAvatar(
+                            child: Text(randomContact.initials()),
+                            backgroundColor: Theme.of(context).accentColor,
                           ),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Center(
-                              child: Text(
-                                "Feel like catching up with " +
-                                    contactName +
-                                    "?\n\nCheck On Them! ",
-                                style: TextStyle(
-                                    color: Colors.black.withOpacity(0.6)),
-                                textScaleFactor: 1.0,
-                                textAlign: TextAlign.center,
-                              ),
-                            )),
-                        ButtonBar(
-                          alignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            FlatButton(
-                              textColor: const Color(0xFF6200EE),
-                              onPressed: () {
-                                // Perform some action
-                              },
-                              child: IconButton(
-                                onPressed: () =>
-                                    launch('tel:' + contactPhoneNumber),
-                                icon: Icon(Icons.phone_forwarded),
-                              ),
-                            ),
-                            FlatButton(
-                              textColor: const Color(0xFF6200EE),
-                              onPressed: () {
-                                // Perform some action
-                              },
-                              child: IconButton(
-                                onPressed: () =>
-                                    launch('sms:' + contactPhoneNumber),
-                                icon: Icon(Icons.textsms_outlined),
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Image.asset('assets/card-sample-image-2.jpg'),
-                      ],
+                    title: Text(
+                      contactName ?? '',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textScaleFactor: 1.50,
+                    ),
+                    subtitle: Text(
+                      contactPhoneNumber,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.6)),
+                      textScaleFactor: 1.25,
                     ),
                   ),
-                )
-              : Center(child: const CircularProgressIndicator()),
-          backgroundColor: Colors.transparent,
-        ));
+                  Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Text(
+                          "Feel like catching up with " +
+                              contactName +
+                              "?\n\nCheck On Them! ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          textScaleFactor: 1.25,
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FlatButton(
+                        textColor: const Color(0xFF6200EE),
+                        onPressed: () {
+                          // Perform some action
+                        },
+                        child: IconButton(
+                          onPressed: () => launch('tel:' + contactPhoneNumber),
+                          icon: Icon(Icons.phone_forwarded),
+                          iconSize: 32.0,
+                        ),
+                      ),
+                      FlatButton(
+                        textColor: const Color(0xFF6200EE),
+                        onPressed: () {
+                          // Perform some action
+                        },
+                        child: IconButton(
+                          onPressed: () => launch('sms:' + contactPhoneNumber),
+                          icon: Icon(Icons.textsms_outlined),
+                          iconSize: 32.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
+                ],
+              ),
+            ),
+            Card(
+              color: Colors.white,
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ListTile(
+                    leading: (randomContact2.avatar != null &&
+                            randomContact2.avatar!.isNotEmpty)
+                        ? CircleAvatar(
+                            backgroundImage:
+                                MemoryImage(randomContact2.avatar!),
+                          )
+                        : CircleAvatar(
+                            child: Text(randomContact2.initials()),
+                            backgroundColor: Theme.of(context).accentColor,
+                          ),
+                    title: Text(
+                      contactName2 ?? '',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                      textScaleFactor: 1.50,
+                    ),
+                    subtitle: Text(
+                      contactPhoneNumber2,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black.withOpacity(0.6)),
+                      textScaleFactor: 1.25,
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Text(
+                          "Feel like catching up with " +
+                              contactName2 +
+                              "?\n\nCheck On Them! ",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                          textScaleFactor: 1.25,
+                          textAlign: TextAlign.center,
+                        ),
+                      )),
+                  ButtonBar(
+                    alignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      FlatButton(
+                        textColor: const Color(0xFF6200EE),
+                        onPressed: () {
+                          // Perform some action
+                        },
+                        child: IconButton(
+                          onPressed: () => launch('tel:' + contactPhoneNumber2),
+                          icon: Icon(Icons.phone_forwarded),
+                          iconSize: 32.0,
+                        ),
+                      ),
+                      FlatButton(
+                        textColor: const Color(0xFF6200EE),
+                        onPressed: () {
+                          // Perform some action
+                        },
+                        child: IconButton(
+                          onPressed: () => launch('sms:' + contactPhoneNumber2),
+                          icon: Icon(Icons.textsms_outlined),
+                          iconSize: 32.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // Image.asset('assets/card-sample-image-2.jpg'),
+                ],
+              ),
+            ),
+          ],
+        ),
+        color: Colors.black,
+      ),
+      // : Center(child: const CircularProgressIndicator()),
+      backgroundColor: Colors.black,
+    ));
   }
 }
