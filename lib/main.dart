@@ -300,205 +300,234 @@ class _ContactsPageState extends State<ContactsPage> {
 
   @override
   void initState() {
-    getContacts().whenComplete(() {
+    _getContacts().whenComplete(() {
       setState(() {});
     });
     super.initState();
   }
 
-  Future<void> getContacts() async {
-    final Iterable<Contact> contacts = await ContactsService.getContacts();
-    setState(() {
-      _contacts = contacts;
-    });
+  Future<Iterable<Contact>> _getContacts() async {
+    _contacts = await ContactsService.getContacts();
+    return _contacts;
   }
 
   @override
   Widget build(BuildContext context) {
-    //First Suggestion
-    var random = new Random();
-    Contact randomContact =
-        _contacts.elementAt(random.nextInt(_contacts.length));
-    String contactName = randomContact.displayName.toString();
-    String contactPhoneNumber = randomContact.phones!.first.value.toString();
-    //Second Suggestion
-    var random2 = new Random();
-    Contact randomContact2 =
-        _contacts.elementAt(random2.nextInt(_contacts.length));
-    String contactName2 = randomContact2.displayName.toString();
-    String contactPhoneNumber2 = randomContact2.phones!.first.value.toString();
 
     return Container(
-        child: Scaffold(
-      appBar: AppBar(
-        title: (Text(
-          "Home",
-          style: TextStyle(color: Colors.white),
-        )),
-        backgroundColor: Colors.black,
-        elevation: 0,
-      ),
-      body: Container(
-        alignment: Alignment.center,
-        margin: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 100.0),
-        child: Column(
-          // mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              "Your Contact Suggestions",
-              style:
-                  TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-              textScaleFactor: 1.75,
-              textAlign: TextAlign.center,
-            ),
-            Card(
-              color: Colors.white,
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: (randomContact.avatar != null &&
-                            randomContact.avatar!.isNotEmpty)
-                        ? CircleAvatar(
-                            backgroundImage: MemoryImage(randomContact.avatar!),
-                          )
-                        : CircleAvatar(
-                            child: Text(randomContact.initials()),
-                            backgroundColor: Theme.of(context).accentColor,
-                          ),
-                    title: Text(
-                      contactName,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textScaleFactor: 1.50,
+        child: FutureBuilder(
+          future: _getContacts(),
+          builder: (BuildContext context, AsyncSnapshot snapshot){
+            print(snapshot.data.toString().length);
+            if(snapshot.data == null){
+              return Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                        child: CircularProgressIndicator()
                     ),
-                    subtitle: Text(
-                      contactPhoneNumber,
+                    Container(
+                      child: Text("Building your suggestions...",
                       style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black.withOpacity(0.6)),
-                      textScaleFactor: 1.25,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold
+                      ),
+                        textScaleFactor: 0.5,
+                      ),
                     ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text(
-                          "Feel like catching up with " +
-                              contactName.substring(0,randomContact2.displayName!.indexOf(" ")) +
-                              "?\n\nCheck On Them! ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          textScaleFactor: 1.25,
-                          textAlign: TextAlign.center,
-                        ),
-                      )),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.spaceAround,
+                  ],
+                ),
+              );
+            }else{
+
+              //First Suggestion
+              var random = new Random();
+              Contact randomContact =
+              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length));
+              String contactName = randomContact.displayName.toString();
+              String contactPhoneNumber = randomContact.phones!.first.value.toString();
+              //Second Suggestion
+              Contact randomContact2 =
+              snapshot.data.elementAt(random.nextInt(snapshot.data.toString().length));
+              String contactName2 = randomContact2.displayName.toString();
+              String contactPhoneNumber2 = randomContact2.phones!.first.value.toString();
+
+
+              return Scaffold(
+                appBar: AppBar(
+                  title: (Text(
+                    "Home",
+                    style: TextStyle(color: Colors.white),
+                  )),
+                  backgroundColor: Colors.black,
+                  elevation: 0,
+                ),
+                body: Container(
+                  alignment: Alignment.center,
+                  margin: EdgeInsets.fromLTRB(10.0, 50.0, 10.0, 100.0),
+                  child: Column(
+                    // mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FlatButton(
-                        textColor: Colors.blue,
-                        onPressed: () {
-                          // Perform some action
-                        },
-                        child: IconButton(
-                          onPressed: () => launch('tel:' + contactPhoneNumber),
-                          icon: Icon(Icons.phone_forwarded),
+                      Text(
+                        "Your Contact Suggestions",
+                        style:
+                        TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                        textScaleFactor: 1.75,
+                        textAlign: TextAlign.center,
+                      ),
+                      Card(
+                        color: Colors.white,
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              leading: (randomContact.avatar != null &&
+                                  randomContact.avatar!.isNotEmpty)
+                                  ? CircleAvatar(
+                                backgroundImage: MemoryImage(randomContact.avatar!),
+                              )
+                                  : CircleAvatar(
+                                child: Text(randomContact.initials()),
+                                backgroundColor: Theme.of(context).accentColor,
+                              ),
+                              title: Text(
+                                contactName,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                textScaleFactor: 1.50,
+                              ),
+                              subtitle: Text(
+                                contactPhoneNumber,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black.withOpacity(0.6)),
+                                textScaleFactor: 1.25,
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Center(
+                                  child: Text(
+                                    "Feel like catching up with " +
+                                        contactName.substring(0,randomContact2.displayName!.indexOf(" ")) +
+                                        "?\n\nCheck On Them! ",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    textScaleFactor: 1.25,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )),
+                            ButtonBar(
+                              alignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                FlatButton(
+                                  textColor: Colors.blue,
+                                  onPressed: () {
+                                    // Perform some action
+                                  },
+                                  child: IconButton(
+                                    onPressed: () => launch('tel:' + contactPhoneNumber),
+                                    icon: Icon(Icons.phone_forwarded),
+                                  ),
+                                ),
+                                FlatButton(
+                                  textColor: Colors.blue,
+                                  onPressed: () {
+                                    // Perform some action
+                                  },
+                                  child: IconButton(
+                                    onPressed: () => launch('sms:' + contactPhoneNumber),
+                                    icon: Icon(Icons.textsms_outlined),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
+                          ],
                         ),
                       ),
-                      FlatButton(
-                        textColor: Colors.blue,
-                        onPressed: () {
-                          // Perform some action
-                        },
-                        child: IconButton(
-                          onPressed: () => launch('sms:' + contactPhoneNumber),
-                          icon: Icon(Icons.textsms_outlined),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
-                ],
-              ),
-            ),
-            Card(
-              color: Colors.white,
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  ListTile(
-                    leading: (randomContact2.avatar != null &&
-                            randomContact2.avatar!.isNotEmpty)
-                        ? CircleAvatar(
-                            backgroundImage:
+                      Card(
+                        color: Colors.white,
+                        clipBehavior: Clip.antiAlias,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              leading: (randomContact2.avatar != null &&
+                                  randomContact2.avatar!.isNotEmpty)
+                                  ? CircleAvatar(
+                                backgroundImage:
                                 MemoryImage(randomContact2.avatar!),
-                          )
-                        : CircleAvatar(
-                            child: Text(randomContact2.initials()),
-                            backgroundColor: Theme.of(context).accentColor,
-                          ),
-                    title: Text(
-                      contactName2,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                      textScaleFactor: 1.50,
-                    ),
-                    subtitle: Text(
-                      contactPhoneNumber2,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black.withOpacity(0.6)),
-                      textScaleFactor: 1.25,
-                    ),
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text(
-                          "Feel like catching up with " +
-                              contactName2.substring(0,randomContact2.displayName!.indexOf(" ")) +
-                              "?\n\nCheck On Them! ",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          textScaleFactor: 1.25,
-                          textAlign: TextAlign.center,
-                        ),
-                      )),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      FlatButton(
-                        textColor: Colors.blue,
-                        onPressed: () {
-                          // Perform some action
-                        },
-                        child: IconButton(
-                          onPressed: () => launch('tel:' + contactPhoneNumber2),
-                          icon: Icon(Icons.phone_forwarded),
-                        ),
-                      ),
-                      FlatButton(
-                        textColor: Colors.blue,
-                        onPressed: () {
-                          // Perform some action
-                        },
-                        child: IconButton(
-                          onPressed: () => launch('sms:' + contactPhoneNumber2),
-                          icon: Icon(Icons.textsms_outlined),
+                              )
+                                  : CircleAvatar(
+                                child: Text(randomContact2.initials()),
+                                backgroundColor: Theme.of(context).accentColor,
+                              ),
+                              title: Text(
+                                contactName2,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                                textScaleFactor: 1.50,
+                              ),
+                              subtitle: Text(
+                                contactPhoneNumber2,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black.withOpacity(0.6)),
+                                textScaleFactor: 1.25,
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Center(
+                                  child: Text(
+                                    "Feel like catching up with " +
+                                        contactName2.substring(0,randomContact2.displayName!.indexOf(" ")) +
+                                        "?\n\nCheck On Them! ",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    textScaleFactor: 1.25,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )),
+                            ButtonBar(
+                              alignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                FlatButton(
+                                  textColor: Colors.blue,
+                                  onPressed: () {
+                                    // Perform some action
+                                  },
+                                  child: IconButton(
+                                    onPressed: () => launch('tel:' + contactPhoneNumber2),
+                                    icon: Icon(Icons.phone_forwarded),
+                                  ),
+                                ),
+                                FlatButton(
+                                  textColor: Colors.blue,
+                                  onPressed: () {
+                                    // Perform some action
+                                  },
+                                  child: IconButton(
+                                    onPressed: () => launch('sms:' + contactPhoneNumber2),
+                                    icon: Icon(Icons.textsms_outlined),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            // Image.asset('assets/card-sample-image-2.jpg'),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                  // Image.asset('assets/card-sample-image-2.jpg'),
-                ],
-              ),
-            ),
-          ],
+                  color: Colors.black,
+                ),
+                // : Center(child: const CircularProgressIndicator()),
+                backgroundColor: Colors.black,
+              );
+            }
+          },
         ),
-        color: Colors.black,
-      ),
-      // : Center(child: const CircularProgressIndicator()),
-      backgroundColor: Colors.black,
-    ));
+    );
   }
 }
