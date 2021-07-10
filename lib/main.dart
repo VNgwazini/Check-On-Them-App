@@ -397,7 +397,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     alignment: MainAxisAlignment.spaceAround,
                     children: [
                       FlatButton(
-                        textColor: const Color(0xFF6200EE),
+                        textColor: Colors.blue,
                         onPressed: () {
                           // Perform some action
                         },
@@ -407,7 +407,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         ),
                       ),
                       FlatButton(
-                        textColor: const Color(0xFF6200EE),
+                        textColor: Colors.blue,
                         onPressed: () {
                           // Perform some action
                         },
@@ -468,7 +468,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     alignment: MainAxisAlignment.spaceAround,
                     children: [
                       FlatButton(
-                        textColor: const Color(0xFF6200EE),
+                        textColor: Colors.blue,
                         onPressed: () {
                           // Perform some action
                         },
@@ -478,7 +478,7 @@ class _ContactsPageState extends State<ContactsPage> {
                         ),
                       ),
                       FlatButton(
-                        textColor: const Color(0xFF6200EE),
+                        textColor: Colors.blue,
                         onPressed: () {
                           // Perform some action
                         },
