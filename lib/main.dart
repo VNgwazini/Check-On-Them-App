@@ -41,6 +41,11 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
+  late Image friends = Image.asset("assets/CheckOnThem_Friend.jpg");
+  late Image family = Image.asset("assets/CheckOnThem_Family.jpg");
+  late Image colleagues = Image.asset("assets/CheckOnThem_Colleague.jpg");
+  late Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
+
   @override
   Widget build(BuildContext context) {
     return Container(
