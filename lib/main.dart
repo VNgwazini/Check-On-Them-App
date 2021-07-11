@@ -17,28 +17,66 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      //text in top bar of app
-      title: 'Check On Them!',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            'Check On Them!',
-            style: TextStyle(color: Colors.white),
-          ),
-          backgroundColor: Colors.black,
-          elevation: 0,
-        ),
-        body: Container(
-          alignment: Alignment.center,
-          padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
-          child: HomeScreen(),
-        ),
-        backgroundColor: Colors.black,
-      ),
+    return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 3)),
+        builder: (context, AsyncSnapshot snapshot){
+        if(snapshot.connectionState == ConnectionState.waiting){
+          return MaterialApp(home: Splash());
+        }else{
+          return MaterialApp(
+            //text in top bar of app
+            title: 'Check On Them!',
+            home: Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  'Check On Them!',
+                  style: TextStyle(color: Colors.white),
+                ),
+                backgroundColor: Colors.black,
+                elevation: 0,
+              ),
+              body: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
+                child: HomeScreen(),
+              ),
+              backgroundColor: Colors.black,
+            ),
+          );
+        }
+        }
     );
   }
 }
+
+class Splash extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child:           Text("Check On Them!",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+              textScaleFactor: 2.0,
+            ),
+          ),
+          // Center(
+          //   child: Image.asset("android/app/src/main/ic_launcher-playstore.png",
+          //   fit: BoxFit.fitHeight,
+          //   ),
+          // ),
+        ],
+      ),
+      backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+    );
+  }
+}
+
 
 class HomeScreen extends StatelessWidget {
   late Image friends = Image.asset("assets/CheckOnThem_Friend.jpg");
