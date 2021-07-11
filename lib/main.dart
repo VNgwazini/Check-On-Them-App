@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
                   'Check On Them!',
                   style: TextStyle(color: Colors.white),
                 ),
-                backgroundColor: Colors.black,
+                backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
                 elevation: 0,
               ),
               body: Container(
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
                 child: HomeScreen(),
               ),
-              backgroundColor: Colors.black,
+              backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
             ),
           );
         }
@@ -87,7 +87,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.black,
+      color: Color.fromRGBO(130, 9, 50, 1.0),
       child: Column(
         children: [
           Padding(
@@ -383,13 +383,13 @@ class _ContactsPageState extends State<ContactsPage> {
             Contact randomContact = new Contact();
             Contact randomContact2 = new Contact();
 
-            if( snapshot.data.elementAt(randomInt1).phones!.isNotEmpty ){
+            if( snapshot.data.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
               //good value
               randomContact = snapshot.data
                   .elementAt(randomInt1);
             }else{
               while(snapshot.data.elementAt(randomInt1).phones!.isEmpty){
-                if(snapshot.data.elementAt(randomInt1).phones!.isNotEmpty){
+                if(snapshot.data.elementAt(randomInt1).phones!.isNotEmpty&& randomInt2 != randomInt1){
                   break;
                 }else{
                   //recalculate random index
@@ -432,7 +432,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   "Home",
                   style: TextStyle(color: Colors.white),
                 )),
-                backgroundColor: Colors.black,
+                backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
                 elevation: 0,
               ),
               body: Container(
@@ -465,7 +465,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 : CircleAvatar(
                                     child: Text(randomContact.initials()),
                                     backgroundColor:
-                                        Theme.of(context).accentColor,
+                                    Color.fromRGBO(130, 9, 50, 1.0),
                                   ),
                             title: Text(
                               contactName,
@@ -490,7 +490,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                           randomContact.displayName!
                                               .indexOf(" ")) +
                                       "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(130, 9, 50, 1.0),
+                                  ),
                                   textScaleFactor: 1.25,
                                   textAlign: TextAlign.center,
                                 )
@@ -498,7 +500,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                   "Feel like catching up with " +
                                       contactName +
                                       "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold,
+                                  color: Color.fromRGBO(130, 9, 50, 1.0),
+                                  ),
                                   textScaleFactor: 1.25,
                                   textAlign: TextAlign.center,
                                 ),
@@ -507,7 +511,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             alignment: MainAxisAlignment.spaceAround,
                             children: [
                               FlatButton(
-                                textColor: Colors.blue,
+                                textColor: Color.fromRGBO(130, 9, 50, 1.0),
                                 onPressed: () {
                                   // Perform some action
                                 },
@@ -518,7 +522,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 ),
                               ),
                               FlatButton(
-                                textColor: Colors.blue,
+                                textColor: Color.fromRGBO(130, 9, 50, 1.0),
                                 onPressed: () {
                                   // Perform some action
                                 },
@@ -550,7 +554,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 : CircleAvatar(
                                     child: Text(randomContact2.initials()),
                                     backgroundColor:
-                                        Theme.of(context).accentColor,
+                                    Color.fromRGBO(130, 9, 50, 1.0),
                                   ),
                             title: Text(
                               contactName2,
@@ -575,7 +579,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                           randomContact2.displayName!
                                               .indexOf(" ")) +
                                       "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(130, 9, 50, 1.0),
+                                  ),
                                   textScaleFactor: 1.25,
                                   textAlign: TextAlign.center,
                                 )
@@ -583,7 +589,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                   "Feel like catching up with " +
                                       contactName2 +
                                       "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  style: TextStyle(fontWeight: FontWeight.bold,
+                                    color: Color.fromRGBO(130, 9, 50, 1.0),
+                                  ),
                                   textScaleFactor: 1.25,
                                   textAlign: TextAlign.center,
                                 ),
@@ -592,7 +600,7 @@ class _ContactsPageState extends State<ContactsPage> {
                             alignment: MainAxisAlignment.spaceAround,
                             children: [
                               FlatButton(
-                                textColor: Colors.blue,
+                                textColor: Color.fromRGBO(130, 9, 50, 1.0),
                                 onPressed: () {
                                   // Perform some action
                                 },
@@ -603,7 +611,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 ),
                               ),
                               FlatButton(
-                                textColor: Colors.blue,
+                                textColor: Color.fromRGBO(130, 9, 50, 1.0),
                                 onPressed: () {
                                   // Perform some action
                                 },
@@ -621,10 +629,10 @@ class _ContactsPageState extends State<ContactsPage> {
                     ),
                   ],
                 ),
-                color: Colors.black,
+                color: Color.fromRGBO(130, 9, 50, 1.0),
               ),
               // : Center(child: const CircularProgressIndicator()),
-              backgroundColor: Colors.black,
+              backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
             );
           }
         },
