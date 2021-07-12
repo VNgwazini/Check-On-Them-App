@@ -15,8 +15,12 @@ import 'package:url_launcher/url_launcher.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
+
   @override
   Widget build(BuildContext context) {
+    precacheImage(supriseMe.image, context);
+
     return FutureBuilder(
       future: Future.delayed(Duration(seconds: 3)),
         builder: (context, AsyncSnapshot snapshot){
@@ -79,13 +83,7 @@ class Splash extends StatelessWidget {
 
 
 class HomeScreen extends StatelessWidget {
-  late Image friends = Image.asset("assets/CheckOnThem_Friend.jpg");
-  late Image family = Image.asset("assets/CheckOnThem_Family.jpg");
-  late Image colleagues = Image.asset("assets/CheckOnThem_Colleague.jpg");
-  late Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
-  late Image launcher = Image.asset("assets/CheckOnThemIcon.jpg");
-
-
+  Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
   @override
   Widget build(BuildContext context) {
     return Container(
