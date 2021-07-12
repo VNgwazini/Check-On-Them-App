@@ -223,44 +223,44 @@ class _ContactsPageState extends State<ContactsPage> {
 
             //First Suggestion
             var random = new Random();
-            var randomInt1 = random.nextInt(snapshot.data.toString().length - 1);
-            var randomInt2 = random.nextInt(snapshot.data.toString().length - 1);
+            var randomInt1 = random.nextInt(_contacts.length);
+            var randomInt2 = random.nextInt(_contacts.length);
             Contact randomContact = new Contact();
             Contact randomContact2 = new Contact();
 
-            if( snapshot.data.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
+            if( _contacts.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
               //good value
-              randomContact = snapshot.data
+              randomContact = _contacts
                   .elementAt(randomInt1);
             }else{
-              while(snapshot.data.elementAt(randomInt1).phones!.isEmpty){
-                if(snapshot.data.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
+              while(_contacts.elementAt(randomInt1).phones!.isEmpty){
+                if(_contacts.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
                   break;
                 }else{
                   //recalculate random index
-                  randomInt1 = random.nextInt(snapshot.data.toString().length - 1);
+                  randomInt1 = random.nextInt(_contacts.length);
                 }
               }
               //update suggestion with good value
-              randomContact = snapshot.data.elementAt(randomInt1);
+              randomContact = _contacts.elementAt(randomInt1);
             }
 
 
-            if( snapshot.data.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
+            if( _contacts.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
               //good value
-              randomContact2 = snapshot.data
+              randomContact2 = _contacts
                   .elementAt(randomInt2);
             }else{
-              while(snapshot.data.elementAt(randomInt2).phones!.isEmpty){
-                if(snapshot.data.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
+              while(_contacts.elementAt(randomInt2).phones!.isEmpty){
+                if(_contacts.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
                   break;
                 }else{
                   //recalculate random index
-                  randomInt2 = random.nextInt(snapshot.data.toString().length - 1);
+                  randomInt2 = random.nextInt(_contacts.length);
                 }
               }
               //update suggestion with good value
-              randomContact2 = snapshot.data.elementAt(randomInt2);
+              randomContact2 = _contacts.elementAt(randomInt2);
             }
 
             String contactName = randomContact.displayName.toString();
