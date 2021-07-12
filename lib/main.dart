@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     precacheImage(supriseMe.image, context);
 
     return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 3)),
+      future: Future.delayed(Duration(seconds: 1)),
         builder: (context, AsyncSnapshot snapshot){
         if(snapshot.connectionState == ConnectionState.waiting){
           return MaterialApp(home: Splash());
@@ -69,11 +69,6 @@ class Splash extends StatelessWidget {
               textScaleFactor: 2.0,
             ),
           ),
-          // Center(
-          //   child: Image.asset("android/app/src/main/ic_launcher-playstore.png",
-          //   fit: BoxFit.fitHeight,
-          //   ),
-          // ),
         ],
       ),
       backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
@@ -84,6 +79,39 @@ class Splash extends StatelessWidget {
 
 class HomeScreen extends StatelessWidget {
   Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
+
+  void navToContacts(BuildContext context) async {
+    //request permission via async function and store response in appropriate object
+    final PermissionStatus permissionStatus =
+    await _getPermission();
+    //check if permission status is granted
+    if (permissionStatus == PermissionStatus.granted) {
+      //access contacts here
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ContactsPage()));
+    }
+    //if permission is not granted, then show a dialog asking the user to grant access
+    else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) =>
+              CupertinoAlertDialog(
+                title: Text('Permission error'),
+                content: Text(
+                    'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
+                actions: <Widget>[
+                  CupertinoDialogAction(
+                    child: Text('OK'),
+                    onPressed: () =>
+                        Navigator.of(context).pop(),
+                  )
+                ],
+              ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -93,10 +121,10 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(5, 16, 5, 16),
             child: Text(
-              "Ready for your contact suggestions?",
+              "Stay Conntected To Your People",
               style:
                   TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-              textScaleFactor: 1.50,
+              textScaleFactor: 1.75,
               textAlign: TextAlign.center,
             ),
           ),
@@ -109,46 +137,21 @@ class HomeScreen extends StatelessWidget {
                     image: supriseMe.image,
                     fit: BoxFit.fill,
                   ),
-                  iconSize: 400,
-                  onPressed: () async {
-                    //request permission via async function and store response in appropriate object
-                    final PermissionStatus permissionStatus =
-                    await _getPermission();
-                    //check if permission status is granted
-                    if (permissionStatus == PermissionStatus.granted) {
-                      //access contacts here
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ContactsPage()));
-                    }
-                    //if permission is not granted, then show a dialog asking the user to grant access
-                    else {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              CupertinoAlertDialog(
-                                title: Text('Permission error'),
-                                content: Text(
-                                    'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
-                                actions: <Widget>[
-                                  CupertinoDialogAction(
-                                    child: Text('OK'),
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                  )
-                                ],
-                              ));
-                    }
-                  },
+                  iconSize: 350,
+                  onPressed: () async { navToContacts(context); },
                 ),
-                Text(
-                  // 'Ready to reconnect with the people in your contacts?\n\nTap here to, Check On Them!',
-                    "Suprise Me!",
+                TextButton(
+                  onPressed: () async { navToContacts(context); },
+                  child: Text(
+                    "Get Contact Suggestions",
                     style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Colors.white),
-                    textScaleFactor: 2.0,
-                    textAlign: TextAlign.center),
+                        fontWeight: FontWeight.w700, color: Color.fromRGBO(130, 9, 50, 1.0)),
+                    textScaleFactor: 1.75,
+                  ),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                  ),
+                ),
               ],
             ),
           ),
@@ -218,7 +221,6 @@ class _ContactsPageState extends State<ContactsPage> {
             );
           } else {
 
-            print("\n\n");
             //First Suggestion
             var random = new Random();
             var randomInt1 = random.nextInt(snapshot.data.toString().length - 1);
@@ -232,7 +234,7 @@ class _ContactsPageState extends State<ContactsPage> {
                   .elementAt(randomInt1);
             }else{
               while(snapshot.data.elementAt(randomInt1).phones!.isEmpty){
-                if(snapshot.data.elementAt(randomInt1).phones!.isNotEmpty&& randomInt2 != randomInt1){
+                if(snapshot.data.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
                   break;
                 }else{
                   //recalculate random index
@@ -469,6 +471,65 @@ class _ContactsPageState extends State<ContactsPage> {
                           // Image.asset('assets/card-sample-image-2.jpg'),
                         ],
                       ),
+                    ),
+                    ButtonBar(
+                      alignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MaterialApp(
+                                      //text in top bar of app
+                                      title: 'Check On Them!',
+                                      home: Scaffold(
+                                        appBar: AppBar(
+                                          title: Text(
+                                            'Check On Them!',
+                                            style: TextStyle(color: Colors.white),
+                                          ),
+                                          backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+                                          elevation: 0,
+                                        ),
+                                        body: Container(
+                                          alignment: Alignment.center,
+                                          padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
+                                          child: HomeScreen(),
+                                        ),
+                                        backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+                                      ),
+                                    )));
+                          },
+                          child: Text("Back",
+                          style: TextStyle(
+                              color: Color.fromRGBO(130, 9, 50, 1.0),
+                          ),
+                            textScaleFactor: 1.25,
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) => super.widget));
+
+                          },
+                          child: Text("Refresh",
+                            style: TextStyle(
+                              color: Color.fromRGBO(130, 9, 50, 1.0),
+                            ),
+                            textScaleFactor: 1.25,
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
