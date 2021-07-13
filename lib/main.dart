@@ -203,6 +203,15 @@ class _ContactsPageState extends State<ContactsPage> {
     return _contacts;
   }
 
+  //remove non digit characters from strings
+  String fixNumber(String number){
+    number.replaceAll("(", "");
+    number.replaceAll(")", "");
+    number.replaceAll(" ", "");
+    number.replaceAll("-", "");
+    return number;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -270,6 +279,26 @@ class _ContactsPageState extends State<ContactsPage> {
             String contactName2 = randomContact2.displayName.toString();
             String contactPhoneNumber2 =
                 randomContact2.phones!.first.value.toString();
+
+            print("\nBefore Fix");
+            print("contactPhoneNumber: \t[${contactPhoneNumber}]");
+            print("contactPhoneNumber2: \t[${contactPhoneNumber2}]");
+
+            //remove non digit characters from strings
+            contactPhoneNumber = contactPhoneNumber.replaceAll("(", "");
+            contactPhoneNumber = contactPhoneNumber.replaceAll(")", "");
+            contactPhoneNumber = contactPhoneNumber.replaceAll(" ", "");
+            contactPhoneNumber = contactPhoneNumber.replaceAll("-", "");
+
+            //remove non digit characters from strings
+            contactPhoneNumber2 = contactPhoneNumber2.replaceAll("(", "");
+            contactPhoneNumber2 = contactPhoneNumber2.replaceAll(")", "-");
+            contactPhoneNumber2 = contactPhoneNumber2.replaceAll(" ", "");
+            contactPhoneNumber2 = contactPhoneNumber2.replaceAll("-", "");
+
+            print("\nAfter Fix");
+            print("contactPhoneNumber: \t[${contactPhoneNumber}]");
+            print("contactPhoneNumber2: \t[${contactPhoneNumber2}]");
 
             return Scaffold(
               appBar: AppBar(
