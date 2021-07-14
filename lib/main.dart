@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -22,39 +23,37 @@ class MyApp extends StatelessWidget {
     precacheImage(supriseMe.image, context);
 
     return FutureBuilder(
-      future: Future.delayed(Duration(seconds: 1)),
-        builder: (context, AsyncSnapshot snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          return MaterialApp(home: Splash());
-        }else{
-          return MaterialApp(
-            //text in top bar of app
-            title: 'Check On Them!',
-            home: Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  'Check On Them!',
-                  style: TextStyle(color: Colors.white),
+        future: Future.delayed(Duration(seconds: 1)),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return MaterialApp(home: Splash());
+          } else {
+            return MaterialApp(
+              //text in top bar of app
+              title: 'Check On Them!',
+              home: Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    'Check On Them!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+                  elevation: 0,
+                ),
+                body: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
+                  child: HomeScreen(),
                 ),
                 backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
-                elevation: 0,
               ),
-              body: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
-                child: HomeScreen(),
-              ),
-              backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
-            ),
-          );
-        }
-        }
-    );
+            );
+          }
+        });
   }
 }
 
 class Splash extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +61,8 @@ class Splash extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Center(
-            child:           Text("Check On Them!",
+            child: Text(
+              "Check On Them!",
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -76,36 +76,30 @@ class Splash extends StatelessWidget {
   }
 }
 
-
 class HomeScreen extends StatelessWidget {
   Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
 
   void navToContacts(BuildContext context) async {
     //request permission via async function and store response in appropriate object
-    final PermissionStatus permissionStatus =
-    await _getPermission();
+    final PermissionStatus permissionStatus = await _getPermission();
     //check if permission status is granted
     if (permissionStatus == PermissionStatus.granted) {
       //access contacts here
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ContactsPage()));
+          context, MaterialPageRoute(builder: (context) => ContactsPage()));
     }
     //if permission is not granted, then show a dialog asking the user to grant access
     else {
       showDialog(
           context: context,
-          builder: (BuildContext context) =>
-              CupertinoAlertDialog(
+          builder: (BuildContext context) => CupertinoAlertDialog(
                 title: Text('Permission error'),
                 content: Text(
                     'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
                 actions: <Widget>[
                   CupertinoDialogAction(
                     child: Text('OK'),
-                    onPressed: () =>
-                        Navigator.of(context).pop(),
+                    onPressed: () => Navigator.of(context).pop(),
                   )
                 ],
               ));
@@ -138,14 +132,19 @@ class HomeScreen extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                   iconSize: 350,
-                  onPressed: () async { navToContacts(context); },
+                  onPressed: () async {
+                    navToContacts(context);
+                  },
                 ),
                 TextButton(
-                  onPressed: () async { navToContacts(context); },
+                  onPressed: () async {
+                    navToContacts(context);
+                  },
                   child: Text(
                     "Get Contact Suggestions",
                     style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Color.fromRGBO(130, 9, 50, 1.0)),
+                        fontWeight: FontWeight.w700,
+                        color: Color.fromRGBO(130, 9, 50, 1.0)),
                     textScaleFactor: 1.75,
                   ),
                   style: ButtonStyle(
@@ -220,7 +219,6 @@ class _ContactsPageState extends State<ContactsPage> {
               ),
             );
           } else {
-
             //First Suggestion
             var random = new Random();
             var randomInt1 = random.nextInt(_contacts.length);
@@ -228,15 +226,16 @@ class _ContactsPageState extends State<ContactsPage> {
             Contact randomContact = new Contact();
             Contact randomContact2 = new Contact();
 
-            if( _contacts.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
+            if (_contacts.elementAt(randomInt1).phones!.isNotEmpty &&
+                randomInt2 != randomInt1) {
               //good value
-              randomContact = _contacts
-                  .elementAt(randomInt1);
-            }else{
-              while(_contacts.elementAt(randomInt1).phones!.isEmpty){
-                if(_contacts.elementAt(randomInt1).phones!.isNotEmpty && randomInt2 != randomInt1){
+              randomContact = _contacts.elementAt(randomInt1);
+            } else {
+              while (_contacts.elementAt(randomInt1).phones!.isEmpty) {
+                if (_contacts.elementAt(randomInt1).phones!.isNotEmpty &&
+                    randomInt2 != randomInt1) {
                   break;
-                }else{
+                } else {
                   //recalculate random index
                   randomInt1 = random.nextInt(_contacts.length);
                 }
@@ -245,27 +244,27 @@ class _ContactsPageState extends State<ContactsPage> {
               randomContact = _contacts.elementAt(randomInt1);
             }
 
-
-            if( _contacts.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
+            if (_contacts.elementAt(randomInt2).phones!.isNotEmpty &&
+                randomInt2 != randomInt1) {
               //good value
-              randomContact2 = _contacts
-                  .elementAt(randomInt2);
-            }else{
-              while(_contacts.elementAt(randomInt2).phones!.isEmpty){
-                if(_contacts.elementAt(randomInt2).phones!.isNotEmpty && randomInt2 != randomInt1){
+              randomContact2 = _contacts.elementAt(randomInt2);
+            } else {
+              while (_contacts.elementAt(randomInt2).phones!.isEmpty) {
+                if (_contacts.elementAt(randomInt2).phones!.isNotEmpty &&
+                    randomInt2 != randomInt1) {
                   break;
-                }else{
+                } else {
                   //recalculate random index
                   randomInt2 = random.nextInt(_contacts.length);
                 }
               }
-              if(randomInt2 == randomInt1){
-                while(randomInt2 == randomInt1){
+              if (randomInt2 == randomInt1) {
+                while (randomInt2 == randomInt1) {
                   //recalculate random index
                   randomInt2 = random.nextInt(_contacts.length);
                 }
               }
-              if(_contacts.elementAt(randomInt2).phones!.isNotEmpty){
+              if (_contacts.elementAt(randomInt2).phones!.isNotEmpty) {
                 //update suggestion with good value
                 randomContact2 = _contacts.elementAt(randomInt2);
               }
@@ -291,6 +290,9 @@ class _ContactsPageState extends State<ContactsPage> {
             contactPhoneNumber2 = contactPhoneNumber2.replaceAll(")", "-");
             contactPhoneNumber2 = contactPhoneNumber2.replaceAll(" ", "");
             contactPhoneNumber2 = contactPhoneNumber2.replaceAll("-", "");
+
+            String urlLaunchBodyToken = Platform.isAndroid ? "?":"&";
+            Uri message = Uri.parse(", you just crossed my mind and I wanted to see how you were doing these days!");
 
             return Scaffold(
               appBar: AppBar(
@@ -331,7 +333,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 : CircleAvatar(
                                     child: Text(randomContact.initials()),
                                     backgroundColor:
-                                    Color.fromRGBO(130, 9, 50, 1.0),
+                                        Color.fromRGBO(130, 9, 50, 1.0),
                                   ),
                             title: Text(
                               contactName,
@@ -349,29 +351,34 @@ class _ContactsPageState extends State<ContactsPage> {
                           Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Center(
-                                child: contactName.contains(" ") ? Text(
-                                  "Feel like catching up with " +
-                                      contactName.substring(
-                                          0,
-                                          randomContact.displayName!
-                                              .indexOf(" ")) +
-                                      "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(130, 9, 50, 1.0),
-                                  ),
-                                  textScaleFactor: 1.25,
-                                  textAlign: TextAlign.center,
-                                )
-                                : Text(
-                                  "Feel like catching up with " +
-                                      contactName +
-                                      "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold,
-                                  color: Color.fromRGBO(130, 9, 50, 1.0),
-                                  ),
-                                  textScaleFactor: 1.25,
-                                  textAlign: TextAlign.center,
-                                ),
+                                child: contactName.contains(" ")
+                                    ? Text(
+                                        "Feel like catching up with " +
+                                            contactName.substring(
+                                                0,
+                                                randomContact.displayName!
+                                                    .indexOf(" ")) +
+                                            "?\n\nCheck On Them! ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                        ),
+                                        textScaleFactor: 1.25,
+                                        textAlign: TextAlign.center,
+                                      )
+                                    : Text(
+                                        "Feel like catching up with " +
+                                            contactName +
+                                            "?\n\nCheck On Them! ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                        ),
+                                        textScaleFactor: 1.25,
+                                        textAlign: TextAlign.center,
+                                      ),
                               )),
                           ButtonBar(
                             alignment: MainAxisAlignment.spaceAround,
@@ -393,8 +400,21 @@ class _ContactsPageState extends State<ContactsPage> {
                                   // Perform some action
                                 },
                                 child: IconButton(
-                                  onPressed: () =>
-                                      launch('sms:' + contactPhoneNumber),
+                                  onPressed: () => contactName.contains(" ")
+                                      ? launch("sms:" +
+                                      contactPhoneNumber +
+                                      urlLaunchBodyToken +
+                                      "body=Hey%20" +
+                                      contactName.substring(
+                                          0,
+                                          randomContact.displayName!
+                                              .indexOf(" "))
+                                      + message.toString())
+                                      :launch("sms:" +
+                                      contactPhoneNumber +
+                                      urlLaunchBodyToken +
+                                      "body=Hey%20" + contactName + message.toString())
+                                  ,
                                   icon: Icon(Icons.textsms_outlined),
                                 ),
                               ),
@@ -420,7 +440,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                 : CircleAvatar(
                                     child: Text(randomContact2.initials()),
                                     backgroundColor:
-                                    Color.fromRGBO(130, 9, 50, 1.0),
+                                        Color.fromRGBO(130, 9, 50, 1.0),
                                   ),
                             title: Text(
                               contactName2,
@@ -438,29 +458,34 @@ class _ContactsPageState extends State<ContactsPage> {
                           Padding(
                               padding: const EdgeInsets.all(16.0),
                               child: Center(
-                                child: contactName2.contains(" ") ? Text(
-                                  "Feel like catching up with " +
-                                      contactName2.substring(
-                                          0,
-                                          randomContact2.displayName!
-                                              .indexOf(" ")) +
-                                      "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(130, 9, 50, 1.0),
-                                  ),
-                                  textScaleFactor: 1.25,
-                                  textAlign: TextAlign.center,
-                                )
+                                child: contactName2.contains(" ")
+                                    ? Text(
+                                        "Feel like catching up with " +
+                                            contactName2.substring(
+                                                0,
+                                                randomContact2.displayName!
+                                                    .indexOf(" ")) +
+                                            "?\n\nCheck On Them! ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                        ),
+                                        textScaleFactor: 1.25,
+                                        textAlign: TextAlign.center,
+                                      )
                                     : Text(
-                                  "Feel like catching up with " +
-                                      contactName2 +
-                                      "?\n\nCheck On Them! ",
-                                  style: TextStyle(fontWeight: FontWeight.bold,
-                                    color: Color.fromRGBO(130, 9, 50, 1.0),
-                                  ),
-                                  textScaleFactor: 1.25,
-                                  textAlign: TextAlign.center,
-                                ),
+                                        "Feel like catching up with " +
+                                            contactName2 +
+                                            "?\n\nCheck On Them! ",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                        ),
+                                        textScaleFactor: 1.25,
+                                        textAlign: TextAlign.center,
+                                      ),
                               )),
                           ButtonBar(
                             alignment: MainAxisAlignment.spaceAround,
@@ -482,8 +507,21 @@ class _ContactsPageState extends State<ContactsPage> {
                                   // Perform some action
                                 },
                                 child: IconButton(
-                                  onPressed: () =>
-                                      launch('sms:' + contactPhoneNumber2),
+                                  onPressed: () => contactName2.contains(" ")
+                                      ? launch("sms:" +
+                                      contactPhoneNumber2 +
+                                      urlLaunchBodyToken +
+                                      "body=Hey%20" +
+                                          contactName2.substring(
+                                          0,
+                                          randomContact2.displayName!
+                                              .indexOf(" "))
+                                      + message.toString())
+                                      :launch("sms:" +
+                                      contactPhoneNumber2 +
+                                      urlLaunchBodyToken +
+                                      "body=Hey%20" + contactName2 + message.toString())
+                                  ,
                                   icon: Icon(Icons.textsms_outlined),
                                 ),
                               ),
@@ -502,34 +540,40 @@ class _ContactsPageState extends State<ContactsPage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MaterialApp(
-                                      //text in top bar of app
-                                      title: 'Check On Them!',
-                                      home: Scaffold(
-                                        appBar: AppBar(
-                                          title: Text(
-                                            'Check On Them!',
-                                            style: TextStyle(color: Colors.white),
+                                          //text in top bar of app
+                                          title: 'Check On Them!',
+                                          home: Scaffold(
+                                            appBar: AppBar(
+                                              title: Text(
+                                                'Check On Them!',
+                                                style: TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              backgroundColor: Color.fromRGBO(
+                                                  130, 9, 50, 1.0),
+                                              elevation: 0,
+                                            ),
+                                            body: Container(
+                                              alignment: Alignment.center,
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0.0, 75.0, 0.0, 75.0),
+                                              child: HomeScreen(),
+                                            ),
+                                            backgroundColor:
+                                                Color.fromRGBO(130, 9, 50, 1.0),
                                           ),
-                                          backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
-                                          elevation: 0,
-                                        ),
-                                        body: Container(
-                                          alignment: Alignment.center,
-                                          padding: EdgeInsets.fromLTRB(0.0, 75.0, 0.0, 75.0),
-                                          child: HomeScreen(),
-                                        ),
-                                        backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
-                                      ),
-                                    )));
+                                        )));
                           },
-                          child: Text("Back",
-                          style: TextStyle(
+                          child: Text(
+                            "Back",
+                            style: TextStyle(
                               color: Color.fromRGBO(130, 9, 50, 1.0),
-                          ),
+                            ),
                             textScaleFactor: 1.25,
                           ),
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
                           ),
                         ),
                         TextButton(
@@ -537,17 +581,19 @@ class _ContactsPageState extends State<ContactsPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (BuildContext context) => super.widget));
-
+                                    builder: (BuildContext context) =>
+                                        super.widget));
                           },
-                          child: Text("Refresh",
+                          child: Text(
+                            "Refresh",
                             style: TextStyle(
                               color: Color.fromRGBO(130, 9, 50, 1.0),
                             ),
                             textScaleFactor: 1.25,
                           ),
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
                           ),
                         ),
                       ],
