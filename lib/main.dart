@@ -203,15 +203,6 @@ class _ContactsPageState extends State<ContactsPage> {
     return _contacts;
   }
 
-  //remove non digit characters from strings
-  String fixNumber(String number){
-    number.replaceAll("(", "");
-    number.replaceAll(")", "");
-    number.replaceAll(" ", "");
-    number.replaceAll("-", "");
-    return number;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -268,8 +259,16 @@ class _ContactsPageState extends State<ContactsPage> {
                   randomInt2 = random.nextInt(_contacts.length);
                 }
               }
-              //update suggestion with good value
-              randomContact2 = _contacts.elementAt(randomInt2);
+              if(randomInt2 == randomInt1){
+                while(randomInt2 == randomInt1){
+                  //recalculate random index
+                  randomInt2 = random.nextInt(_contacts.length);
+                }
+              }
+              if(_contacts.elementAt(randomInt2).phones!.isNotEmpty){
+                //update suggestion with good value
+                randomContact2 = _contacts.elementAt(randomInt2);
+              }
             }
 
             String contactName = randomContact.displayName.toString();
@@ -280,10 +279,7 @@ class _ContactsPageState extends State<ContactsPage> {
             String contactPhoneNumber2 =
                 randomContact2.phones!.first.value.toString();
 
-            print("\nBefore Fix");
-            print("contactPhoneNumber: \t[${contactPhoneNumber}]");
-            print("contactPhoneNumber2: \t[${contactPhoneNumber2}]");
-
+            //TODO move this logic to a separate function
             //remove non digit characters from strings
             contactPhoneNumber = contactPhoneNumber.replaceAll("(", "");
             contactPhoneNumber = contactPhoneNumber.replaceAll(")", "");
@@ -295,10 +291,6 @@ class _ContactsPageState extends State<ContactsPage> {
             contactPhoneNumber2 = contactPhoneNumber2.replaceAll(")", "-");
             contactPhoneNumber2 = contactPhoneNumber2.replaceAll(" ", "");
             contactPhoneNumber2 = contactPhoneNumber2.replaceAll("-", "");
-
-            print("\nAfter Fix");
-            print("contactPhoneNumber: \t[${contactPhoneNumber}]");
-            print("contactPhoneNumber2: \t[${contactPhoneNumber2}]");
 
             return Scaffold(
               appBar: AppBar(
