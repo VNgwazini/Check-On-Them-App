@@ -1,16 +1,4 @@
-# check_on_them_app
+# Check On Them - App
+Check On Them is a cross platform  app designed for people who struggle with keeping up with or following up with other people. Our app simply selects people from your contacts each day and gently suggests that you ‘check on them’.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+More information here: https://docs.google.com/document/d/1_YSWXWdY-kfHQ6j7_vj_ton0hrT_bRAbWfGskN0jgxM/edit?usp=sharing
