@@ -39,8 +39,54 @@ class _MyAppState extends State<MyApp> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      navToContacts(context, index);
     });
+  }
+
+  void navToContacts(BuildContext context, int index) async {
+    //request permission via async function and store response in appropriate object
+    final PermissionStatus permissionStatus = await _getPermission();
+    //check if permission status is granted
+    if (permissionStatus == PermissionStatus.granted) {
+      //nav to contacts tab
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+    //if permission is not granted, then show a dialog asking the user to grant access
+    else {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+            title: Text('Permission error'),
+            content: Text(
+                'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            ],
+          ));
+    }
+  }
+  
+  //future is an object that will be populated or available later
+  Future<PermissionStatus> _getPermission() async {
+    //specify and store the type of permission we expect to store in our permission object
+    final PermissionStatus permission = await Permission.contacts.status;
+    //if the permission is neither granted or denied
+    if (permission != PermissionStatus.granted) {
+      //map the permission to it corresponding status
+      final Map<Permission, PermissionStatus> permissionStatus =
+      await [Permission.contacts].request();
+      //return the specific status for this particular permission, unless its null
+      return permissionStatus[Permission.contacts] ??
+          //then return a denied status instead;
+          PermissionStatus.denied;
+    } else {
+      return permission;
+    }
   }
 
   @override
@@ -128,33 +174,6 @@ class Splash extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
 
-  void navToContacts(BuildContext context) async {
-    //request permission via async function and store response in appropriate object
-    final PermissionStatus permissionStatus = await _getPermission();
-    //check if permission status is granted
-    if (permissionStatus == PermissionStatus.granted) {
-      //access contacts here
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => ContactsPage()));
-    }
-    //if permission is not granted, then show a dialog asking the user to grant access
-    else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => CupertinoAlertDialog(
-                title: Text('Permission error'),
-                content: Text(
-                    'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    child: Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ],
-              ));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -196,24 +215,6 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  //future is an object that will be populated or available later
-  Future<PermissionStatus> _getPermission() async {
-    //specify and store the type of permission we expect to store in our permission object
-    final PermissionStatus permission = await Permission.contacts.status;
-    //if the permission is neither granted or denied
-    if (permission != PermissionStatus.granted) {
-      //map the permission to it corresponding status
-      final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      //return the specific status for this particular permission, unless its null
-      return permissionStatus[Permission.contacts] ??
-          //then return a denied status instead;
-          PermissionStatus.denied;
-    } else {
-      return permission;
-    }
   }
 }
 
