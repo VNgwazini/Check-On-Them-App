@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:settings_ui/settings_ui.dart';
+// import 'package:settings_ui/settings_ui.dart';
 
 
 //app icon = <a href='https://www.freepik.com/photos/technology'>Technology photo created by wayhomestudio - www.freepik.com</a>
@@ -30,25 +30,12 @@ class _MyAppState extends State<MyApp> {
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     ContactsPage(),
-    SettingsList(
-      sections: [
-        SettingsSection(
-          title: 'Section',
-          tiles: [
-            SettingsTile(
-              title: 'Language',
-              subtitle: 'English',
-              leading: Icon(Icons.language),
-              onPressed: (BuildContext context) {},
-            ),
-          ],
-        ),
-      ],
-    ),
+    //TODO: implement settings page
+    // SettingsListPage(title: 'Flutter Demo Home Page'),
   ];
 
   Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
-  int _selectedIndex = 0; //New
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -69,6 +56,12 @@ class _MyAppState extends State<MyApp> {
             return MaterialApp(
               //text in top bar of app
               title: 'Check On Them!',
+              // theme: ThemeData(
+              //   brightness: Brightness.light,
+              // ),
+              // darkTheme: ThemeData(
+              //   brightness: Brightness.dark,
+              // ),
               home: Scaffold(
                 appBar: AppBar(
                   title: Text(
@@ -92,10 +85,10 @@ class _MyAppState extends State<MyApp> {
                       icon: Icon(Icons.account_box),
                       label: 'Suggestions',
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.settings),
-                      label: 'Settings',
-                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(Icons.settings),
+                    //   label: 'Settings',
+                    // ),
                   ],
                   currentIndex: _selectedIndex,
                   selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
@@ -600,3 +593,60 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 }
+
+// class SettingsListPage extends StatefulWidget {
+//   SettingsListPage({Key? key, required this.title}) : super(key: key);
+//   final String title;
+//   @override
+//   _SettingsListPageState createState() => _SettingsListPageState();
+// }
+//
+// class _SettingsListPageState extends State<SettingsListPage> {
+//   bool isSwitched = false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SettingsList(
+//       sections: [
+//         //ToDo: Add list of languages
+//         SettingsSection(
+//           title: Text('System Settings'),
+//           tiles: [
+//             SettingsTile(
+//               title: Text('Language'),
+//               value: Text('English'),
+//               leading: Icon(Icons.language),
+//               onPressed: (BuildContext context) {},
+//             ),
+//           ],
+//         ),
+//         SettingsSection(
+//           //ToDo: switch is reset on page load, not persistent
+//         title: Text('Appearance'),
+//           tiles: [
+//             SettingsTile.switchTile(
+//               title: Text('Dark Mode'),
+//               leading: Icon(Icons.phone_android),
+//               onToggle: (value) {
+//                 setState(() {
+//                   isSwitched = value;
+//                 });
+//               },initialValue: isSwitched,
+//             ),
+//           ],
+//         ),
+//         SettingsSection(
+//           title: Text('Message'),
+//           tiles: [
+//             SettingsTile(
+//               title: Text('Preset'),
+//               value: Text('Crossed My Mind'),
+//               leading: Icon(Icons.language),
+//               onPressed: (BuildContext context) {},
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
