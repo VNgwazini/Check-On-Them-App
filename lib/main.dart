@@ -182,7 +182,7 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(5, 16, 5, 16),
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
             child: Text(
               "Stay Conntected To Your People",
               style:
@@ -241,6 +241,7 @@ class _ContactsPageState extends State<ContactsPage> {
     );
     return _contacts;
   }
+  Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
 
   @override
   Widget build(BuildContext context) {
@@ -257,6 +258,69 @@ class _ContactsPageState extends State<ContactsPage> {
                   Center(child: CircularProgressIndicator()),
                 ],
               ),
+            );
+          }else if(_contacts.isEmpty){
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                  child: Text(
+                    "Oops! Something went wrong.",
+                    style:
+                    TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                    textScaleFactor: 1.75,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Image(
+                        image: supriseMe.image,
+                        fit: BoxFit.fill,
+                      ),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                        child: TextButton(
+                          onPressed: () { openAppSettings(); },
+                          child: Text(
+                            "Open Settings",
+                            style:
+                            TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Color.fromRGBO(130, 9, 50, 1.0)
+                            ),
+                            textScaleFactor: 1.50,
+                            textAlign: TextAlign.center,
+                          ),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.white)
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                        child: Text(
+                          "Please give us permission to access your contacts in the settings.\n",
+                          style:
+                          TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                          textScaleFactor: 1.50,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             );
           } else {
             //First Suggestion
