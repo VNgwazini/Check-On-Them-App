@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:settings_ui/settings_ui.dart';
+// import 'package:settings_ui/settings_ui.dart';
 
 
 //app icon = <a href='https://www.freepik.com/photos/technology'>Technology photo created by wayhomestudio - www.freepik.com</a>
@@ -25,35 +25,69 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     ContactsPage(),
-    SettingsList(
-      sections: [
-        SettingsSection(
-          title: 'Section',
-          tiles: [
-            SettingsTile(
-              title: 'Language',
-              subtitle: 'English',
-              leading: Icon(Icons.language),
-              onPressed: (BuildContext context) {},
-            ),
-          ],
-        ),
-      ],
-    ),
+    //TODO: implement settings page
+    // SettingsListPage(title: 'Flutter Demo Home Page'),
   ];
 
   Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
-  int _selectedIndex = 0; //New
+  int screen = 0;
+  late PermissionStatus _permissionStatus;
+
+  void initState() {
+    _getPermission().whenComplete(() {
+      setState(() {});
+    });
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      navToContacts(context, index);
     });
+  }
+
+  void navToContacts(BuildContext context, int index) async {
+    //check if permission status is granted
+    if(Platform.isAndroid){
+      if (await _getPermission() == PermissionStatus.granted) {
+        //nav to contacts tab
+        setState(() {
+          screen = index;
+        });
+      }
+      //if permission is not granted, then open settings
+      else {
+        await openAppSettings().whenComplete(() =>
+            navToContacts(context, index)
+        );
+      }
+    }else{
+      //nav to contacts tab
+      setState(() {
+        screen = index;
+      });
+    }
+  }
+  
+  //future is an object that will be populated or available later
+  Future<PermissionStatus> _getPermission() async {
+    //specify and store the type of permission we expect to store in our permission object
+    _permissionStatus = await Permission.contacts.status;
+    //if the permission is neither granted or denied
+    if (_permissionStatus != PermissionStatus.granted) {
+      //map the permission to it corresponding status
+      final Map<Permission, PermissionStatus> permissionStatus =
+      await [Permission.contacts].request();
+      //return the specific status for this particular permission, unless its null
+      return permissionStatus[Permission.contacts] ??
+          //then return a denied status instead;
+          PermissionStatus.denied;
+    } else {
+      return _permissionStatus;
+    }
   }
 
   @override
@@ -61,14 +95,20 @@ class _MyAppState extends State<MyApp> {
     precacheImage(supriseMe.image, context);
 
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 0)),
+        future: _getPermission(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return MaterialApp(home: Splash());
-          } else {
+          } else if(!_permissionStatus.isGranted){
             return MaterialApp(
               //text in top bar of app
               title: 'Check On Them!',
+              // theme: ThemeData(
+              //   brightness: Brightness.light,
+              // ),
+              // darkTheme: ThemeData(
+              //   brightness: Brightness.dark,
+              // ),
               home: Scaffold(
                 appBar: AppBar(
                   title: Text(
@@ -79,8 +119,70 @@ class _MyAppState extends State<MyApp> {
                   elevation: 0,
                 ),
                 body: Container(
-                  alignment: Alignment.center,
-                  child: _widgetOptions.elementAt(_selectedIndex),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                        child: Text(
+                          "Oops! Something went wrong.",
+                          style:
+                          TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                          textScaleFactor: 1.75,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image(
+                              image: supriseMe.image,
+                              fit: BoxFit.fill,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                              child: TextButton(
+                                onPressed: () {
+                                  Platform.isAndroid?_onItemTapped(1):openAppSettings();
+                                  },
+                                child: Text(
+                                  "Open Settings",
+                                  style:
+                                  TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      color: Color.fromRGBO(130, 9, 50, 1.0)
+                                  ),
+                                  textScaleFactor: 1.50,
+                                  textAlign: TextAlign.center,
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.white)
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                              child: Text(
+                                "Please give us permission to access your contacts in the settings.\n",
+                                style:
+                                TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                                textScaleFactor: 1.50,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
@@ -92,12 +194,58 @@ class _MyAppState extends State<MyApp> {
                       icon: Icon(Icons.account_box),
                       label: 'Suggestions',
                     ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.settings),
-                      label: 'Settings',
-                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(Icons.settings),
+                    //   label: 'Settings',
+                    // ),
                   ],
-                  currentIndex: _selectedIndex,
+                  currentIndex: screen,
+                  selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
+                  onTap: _onItemTapped,
+                ),
+                backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+              ),
+            );
+          }
+          else {
+            return MaterialApp(
+              //text in top bar of app
+              title: 'Check On Them!',
+              // theme: ThemeData(
+              //   brightness: Brightness.light,
+              // ),
+              // darkTheme: ThemeData(
+              //   brightness: Brightness.dark,
+              // ),
+              home: Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    'Check On Them!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+                  elevation: 0,
+                ),
+                body: Container(
+                  alignment: Alignment.center,
+                  child: _widgetOptions.elementAt(screen),
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_box),
+                      label: 'Suggestions',
+                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(Icons.settings),
+                    //   label: 'Settings',
+                    // ),
+                  ],
+                  currentIndex: screen,
                   selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
                   onTap: _onItemTapped,
                 ),
@@ -133,34 +281,7 @@ class Splash extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
-  Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
-
-  void navToContacts(BuildContext context) async {
-    //request permission via async function and store response in appropriate object
-    final PermissionStatus permissionStatus = await _getPermission();
-    //check if permission status is granted
-    if (permissionStatus == PermissionStatus.granted) {
-      //access contacts here
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => ContactsPage()));
-    }
-    //if permission is not granted, then show a dialog asking the user to grant access
-    else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => CupertinoAlertDialog(
-                title: Text('Permission error'),
-                content: Text(
-                    'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
-                actions: <Widget>[
-                  CupertinoDialogAction(
-                    child: Text('OK'),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ],
-              ));
-    }
-  }
+  final Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
 
   @override
   Widget build(BuildContext context) {
@@ -170,9 +291,9 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(5, 16, 5, 16),
+            padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
             child: Text(
-              "Stay Conntected To Your People",
+              "Stay Connected To Your People",
               style:
                   TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
               textScaleFactor: 1.75,
@@ -204,24 +325,6 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-
-  //future is an object that will be populated or available later
-  Future<PermissionStatus> _getPermission() async {
-    //specify and store the type of permission we expect to store in our permission object
-    final PermissionStatus permission = await Permission.contacts.status;
-    //if the permission is neither granted or denied
-    if (permission != PermissionStatus.granted) {
-      //map the permission to it corresponding status
-      final Map<Permission, PermissionStatus> permissionStatus =
-          await [Permission.contacts].request();
-      //return the specific status for this particular permission, unless its null
-      return permissionStatus[Permission.contacts] ??
-          //then return a denied status instead;
-          PermissionStatus.denied;
-    } else {
-      return permission;
-    }
-  }
 }
 
 class ContactsPage extends StatefulWidget {
@@ -247,6 +350,7 @@ class _ContactsPageState extends State<ContactsPage> {
     );
     return _contacts;
   }
+  Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
 
   @override
   Widget build(BuildContext context) {
@@ -255,12 +359,77 @@ class _ContactsPageState extends State<ContactsPage> {
         future: _getContacts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // print(snapshot.data.toString().length);
-          if (snapshot.data == null) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(child: CircularProgressIndicator()),
+                ],
+              ),
+            );
+          }else if(_contacts.isEmpty){
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                    child: Text(
+                      "Oops! Something went wrong.",
+                      style:
+                      TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                      textScaleFactor: 1.75,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Image(
+                          image: supriseMe.image,
+                          fit: BoxFit.fill,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                          child: TextButton(
+                            onPressed: () { openAppSettings(); },
+                            child: Text(
+                              "Open Settings",
+                              style:
+                              TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Color.fromRGBO(130, 9, 50, 1.0)
+                              ),
+                              textScaleFactor: 1.50,
+                              textAlign: TextAlign.center,
+                            ),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.white)
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                          child: Text(
+                            "Please give us permission to access your contacts in the settings.\n",
+                            style:
+                            TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                            textScaleFactor: 1.50,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             );
@@ -420,21 +589,22 @@ class _ContactsPageState extends State<ContactsPage> {
                         ButtonBar(
                           alignment: MainAxisAlignment.spaceAround,
                           children: [
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () =>
                                     launch('tel:' + contactPhoneNumber),
                                 icon: Icon(Icons.phone_forwarded),
                               ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                              ),
                             ),
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () => contactName.contains(" ")
@@ -453,6 +623,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                     "body=Hey%20" + contactName + message.toString())
                                 ,
                                 icon: Icon(Icons.textsms_outlined),
+                              ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
                               ),
                             ),
                           ],
@@ -527,21 +700,22 @@ class _ContactsPageState extends State<ContactsPage> {
                         ButtonBar(
                           alignment: MainAxisAlignment.spaceAround,
                           children: [
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () =>
                                     launch('tel:' + contactPhoneNumber2),
                                 icon: Icon(Icons.phone_forwarded),
                               ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                              ),
                             ),
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () => contactName2.contains(" ")
@@ -560,6 +734,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                     "body=Hey%20" + contactName2 + message.toString())
                                 ,
                                 icon: Icon(Icons.textsms_outlined),
+                              ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
                               ),
                             ),
                           ],
@@ -600,3 +777,60 @@ class _ContactsPageState extends State<ContactsPage> {
     );
   }
 }
+
+// class SettingsListPage extends StatefulWidget {
+//   SettingsListPage({Key? key, required this.title}) : super(key: key);
+//   final String title;
+//   @override
+//   _SettingsListPageState createState() => _SettingsListPageState();
+// }
+//
+// class _SettingsListPageState extends State<SettingsListPage> {
+//   bool isSwitched = false;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return SettingsList(
+//       sections: [
+//         //ToDo: Add list of languages
+//         SettingsSection(
+//           title: Text('System Settings'),
+//           tiles: [
+//             SettingsTile(
+//               title: Text('Language'),
+//               value: Text('English'),
+//               leading: Icon(Icons.language),
+//               onPressed: (BuildContext context) {},
+//             ),
+//           ],
+//         ),
+//         SettingsSection(
+//           //ToDo: switch is reset on page load, not persistent
+//         title: Text('Appearance'),
+//           tiles: [
+//             SettingsTile.switchTile(
+//               title: Text('Dark Mode'),
+//               leading: Icon(Icons.phone_android),
+//               onToggle: (value) {
+//                 setState(() {
+//                   isSwitched = value;
+//                 });
+//               },initialValue: isSwitched,
+//             ),
+//           ],
+//         ),
+//         SettingsSection(
+//           title: Text('Message'),
+//           tiles: [
+//             SettingsTile(
+//               title: Text('Preset'),
+//               value: Text('Crossed My Mind'),
+//               leading: Icon(Icons.language),
+//               onPressed: (BuildContext context) {},
+//             ),
+//           ],
+//         ),
+//       ],
+//     );
+//   }
+// }
