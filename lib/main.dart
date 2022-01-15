@@ -281,7 +281,7 @@ class Splash extends StatelessWidget {
 }
 
 class HomeScreen extends StatelessWidget {
-  Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
+  final Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
 
   @override
   Widget build(BuildContext context) {
@@ -589,21 +589,22 @@ class _ContactsPageState extends State<ContactsPage> {
                         ButtonBar(
                           alignment: MainAxisAlignment.spaceAround,
                           children: [
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () =>
                                     launch('tel:' + contactPhoneNumber),
                                 icon: Icon(Icons.phone_forwarded),
                               ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                              ),
                             ),
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () => contactName.contains(" ")
@@ -622,6 +623,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                     "body=Hey%20" + contactName + message.toString())
                                 ,
                                 icon: Icon(Icons.textsms_outlined),
+                              ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
                               ),
                             ),
                           ],
@@ -696,21 +700,22 @@ class _ContactsPageState extends State<ContactsPage> {
                         ButtonBar(
                           alignment: MainAxisAlignment.spaceAround,
                           children: [
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () =>
                                     launch('tel:' + contactPhoneNumber2),
                                 icon: Icon(Icons.phone_forwarded),
                               ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                              ),
                             ),
-                            FlatButton(
-                              textColor: Color.fromRGBO(130, 9, 50, 1.0),
+                            TextButton(
                               onPressed: () {
-                                // Perform some action
+
                               },
                               child: IconButton(
                                 onPressed: () => contactName2.contains(" ")
@@ -729,6 +734,9 @@ class _ContactsPageState extends State<ContactsPage> {
                                     "body=Hey%20" + contactName2 + message.toString())
                                 ,
                                 icon: Icon(Icons.textsms_outlined),
+                              ),
+                              style: ButtonStyle(
+                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
                               ),
                             ),
                           ],
