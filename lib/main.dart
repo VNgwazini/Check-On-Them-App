@@ -25,8 +25,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
     ContactsPage(),
@@ -35,7 +33,15 @@ class _MyAppState extends State<MyApp> {
   ];
 
   Image supriseMe = Image.asset("assets/CheckOnThem_SupriseMe.jpg");
-  int _selectedIndex = 0;
+  int screen = 0;
+  late PermissionStatus _permissionStatus;
+
+  void initState() {
+    _getPermission().whenComplete(() {
+      setState(() {});
+    });
+    super.initState();
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -44,39 +50,34 @@ class _MyAppState extends State<MyApp> {
   }
 
   void navToContacts(BuildContext context, int index) async {
-    //request permission via async function and store response in appropriate object
-    final PermissionStatus permissionStatus = await _getPermission();
     //check if permission status is granted
-    if (permissionStatus == PermissionStatus.granted) {
+    if(Platform.isAndroid){
+      if (await _getPermission() == PermissionStatus.granted) {
+        //nav to contacts tab
+        setState(() {
+          screen = index;
+        });
+      }
+      //if permission is not granted, then open settings
+      else {
+        await openAppSettings().whenComplete(() =>
+            navToContacts(context, index)
+        );
+      }
+    }else{
       //nav to contacts tab
       setState(() {
-        _selectedIndex = index;
+        screen = index;
       });
-    }
-    //if permission is not granted, then show a dialog asking the user to grant access
-    else {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) => AlertDialog(
-            title: Text('Permission error'),
-            content: Text(
-                'Please grant contact access permission privileges to the "Check On Them - App" in the system settings'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text('OK'),
-                onPressed: () => Navigator.of(context).pop(),
-              )
-            ],
-          ));
     }
   }
   
   //future is an object that will be populated or available later
   Future<PermissionStatus> _getPermission() async {
     //specify and store the type of permission we expect to store in our permission object
-    final PermissionStatus permission = await Permission.contacts.status;
+    _permissionStatus = await Permission.contacts.status;
     //if the permission is neither granted or denied
-    if (permission != PermissionStatus.granted) {
+    if (_permissionStatus != PermissionStatus.granted) {
       //map the permission to it corresponding status
       final Map<Permission, PermissionStatus> permissionStatus =
       await [Permission.contacts].request();
@@ -85,7 +86,7 @@ class _MyAppState extends State<MyApp> {
           //then return a denied status instead;
           PermissionStatus.denied;
     } else {
-      return permission;
+      return _permissionStatus;
     }
   }
 
@@ -94,11 +95,119 @@ class _MyAppState extends State<MyApp> {
     precacheImage(supriseMe.image, context);
 
     return FutureBuilder(
-        future: Future.delayed(Duration(seconds: 0)),
+        future: _getPermission(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return MaterialApp(home: Splash());
-          } else {
+          } else if(!_permissionStatus.isGranted){
+            return MaterialApp(
+              //text in top bar of app
+              title: 'Check On Them!',
+              // theme: ThemeData(
+              //   brightness: Brightness.light,
+              // ),
+              // darkTheme: ThemeData(
+              //   brightness: Brightness.dark,
+              // ),
+              home: Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    'Check On Them!',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+                  elevation: 0,
+                ),
+                body: Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                        child: Text(
+                          "Oops! Something went wrong.",
+                          style:
+                          TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                          textScaleFactor: 1.75,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Image(
+                              image: supriseMe.image,
+                              fit: BoxFit.fill,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                              child: TextButton(
+                                onPressed: () {
+                                  Platform.isAndroid?_onItemTapped(1):openAppSettings();
+                                  },
+                                child: Text(
+                                  "Open Settings",
+                                  style:
+                                  TextStyle(
+                                      fontWeight: FontWeight.normal,
+                                      color: Color.fromRGBO(130, 9, 50, 1.0)
+                                  ),
+                                  textScaleFactor: 1.50,
+                                  textAlign: TextAlign.center,
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.white)
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                              child: Text(
+                                "Please give us permission to access your contacts in the settings.\n",
+                                style:
+                                TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                                textScaleFactor: 1.50,
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                bottomNavigationBar: BottomNavigationBar(
+                  items: const <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.home),
+                      label: 'Home',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(Icons.account_box),
+                      label: 'Suggestions',
+                    ),
+                    // BottomNavigationBarItem(
+                    //   icon: Icon(Icons.settings),
+                    //   label: 'Settings',
+                    // ),
+                  ],
+                  currentIndex: screen,
+                  selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
+                  onTap: _onItemTapped,
+                ),
+                backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
+              ),
+            );
+          }
+          else {
             return MaterialApp(
               //text in top bar of app
               title: 'Check On Them!',
@@ -119,7 +228,7 @@ class _MyAppState extends State<MyApp> {
                 ),
                 body: Container(
                   alignment: Alignment.center,
-                  child: _widgetOptions.elementAt(_selectedIndex),
+                  child: _widgetOptions.elementAt(screen),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
                   items: const <BottomNavigationBarItem>[
@@ -136,7 +245,7 @@ class _MyAppState extends State<MyApp> {
                     //   label: 'Settings',
                     // ),
                   ],
-                  currentIndex: _selectedIndex,
+                  currentIndex: screen,
                   selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
                   onTap: _onItemTapped,
                 ),
@@ -250,7 +359,7 @@ class _ContactsPageState extends State<ContactsPage> {
         future: _getContacts(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // print(snapshot.data.toString().length);
-          if (snapshot.data == null) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -260,67 +369,69 @@ class _ContactsPageState extends State<ContactsPage> {
               ),
             );
           }else if(_contacts.isEmpty){
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
-                  child: Text(
-                    "Oops! Something went wrong.",
-                    style:
-                    TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                    textScaleFactor: 1.75,
-                    textAlign: TextAlign.center,
+            return Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                    child: Text(
+                      "Oops! Something went wrong.",
+                      style:
+                      TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                      textScaleFactor: 1.75,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Image(
-                        image: supriseMe.image,
-                        fit: BoxFit.fill,
-                      ),
-                    ],
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Image(
+                          image: supriseMe.image,
+                          fit: BoxFit.fill,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
-                        child: TextButton(
-                          onPressed: () { openAppSettings(); },
-                          child: Text(
-                            "Open Settings",
-                            style:
-                            TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Color.fromRGBO(130, 9, 50, 1.0)
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                          child: TextButton(
+                            onPressed: () { openAppSettings(); },
+                            child: Text(
+                              "Open Settings",
+                              style:
+                              TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Color.fromRGBO(130, 9, 50, 1.0)
+                              ),
+                              textScaleFactor: 1.50,
+                              textAlign: TextAlign.center,
                             ),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.white)
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                          child: Text(
+                            "Please give us permission to access your contacts in the settings.\n",
+                            style:
+                            TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
                             textScaleFactor: 1.50,
                             textAlign: TextAlign.center,
                           ),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.white)
-                          ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        child: Text(
-                          "Please give us permission to access your contacts in the settings.\n",
-                          style:
-                          TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                          textScaleFactor: 1.50,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           } else {
             //First Suggestion
