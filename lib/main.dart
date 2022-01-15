@@ -293,7 +293,7 @@ class HomeScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
             child: Text(
-              "Stay Conntected To Your People",
+              "Stay Connected To Your People",
               style:
                   TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
               textScaleFactor: 1.75,
