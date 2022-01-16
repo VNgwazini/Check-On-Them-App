@@ -11,6 +11,14 @@ App UI (Still in early development...)
 <img src="./assets/SimulatorScreenShot_Sent.png" height="360" style="margin: 10px;">
 </p>
   
+Attribution
+---------------------
+<p float="left">
+<a href="https://www.freepik.com/photos/phone">Phone photo created by wayhomestudio - www.freepik.com</a>
+  
+<a href="https://www.freepik.com/photos/human">Human photo created by wayhomestudio - www.freepik.com</a>
+</p>
+  
 License
 ----------------------
 ```
