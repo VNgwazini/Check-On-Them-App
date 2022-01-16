@@ -42,12 +42,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      navToContacts(context, index);
-    });
-  }
-
   void navToContacts(BuildContext context, int index) async {
     //check if permission status is granted
     if(Platform.isAndroid){
@@ -118,93 +112,96 @@ class _MyAppState extends State<MyApp> {
                   elevation: 0,
                 ),
                 body: Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
-                        child: Text(
-                          "Oops! Something went wrong.",
-                          style:
-                          TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                          textScaleFactor: 1.75,
-                          textAlign: TextAlign.center,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                          child: Text(
+                            "Oops! Something went wrong.",
+                            style:
+                            TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                            textScaleFactor: 1.50,
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Image(
-                              image: supriseMe.image,
-                              fit: BoxFit.fill,
-                            ),
-                          ],
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Image(
+                                image: supriseMe.image,
+                                fit: BoxFit.fill,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
-                              child: TextButton(
-                                onPressed: () {
-                                  setState(() {
-                                    AppSettings.openAppSettings();
-                                    navToContacts(context, 0);
-                                  });
+                        Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                                child: TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      AppSettings.openAppSettings();
+                                      navToContacts(context, 0);
+                                    });
                                   },
-                                child: Text(
-                                  "Open Settings",
-                                  style:
-                                  TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      color: Color.fromRGBO(130, 9, 50, 1.0)
+                                  child: Text(
+                                    "Open Settings",
+                                    style:
+                                    TextStyle(
+                                        fontWeight: FontWeight.normal,
+                                        color: Color.fromRGBO(130, 9, 50, 1.0)
+                                    ),
+                                    textScaleFactor: 1.50,
+                                    textAlign: TextAlign.center,
                                   ),
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all(Colors.white)
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                child: Text(
+                                  "Please give us permission to access your contacts in the settings.\n",
+                                  style:
+                                  TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
                                   textScaleFactor: 1.50,
                                   textAlign: TextAlign.center,
                                 ),
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(Colors.white)
-                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                              child: Text(
-                                "Please give us permission to access your contacts in the settings.\n",
-                                style:
-                                TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                                textScaleFactor: 1.50,
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-                bottomNavigationBar: BottomNavigationBar(
-                  items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: 'Home',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.account_box),
-                      label: 'Suggestions',
-                    ),
-                    // BottomNavigationBarItem(
-                    //   icon: Icon(Icons.settings),
-                    //   label: 'Settings',
-                    // ),
-                  ],
-                  currentIndex: screen,
-                  selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
-                  onTap: _onItemTapped,
-                ),
+                //Todo: contactsPage contains commented multi-item navbar
+                // bottomNavigationBar: Container(
+                //   height: 75,
+                //   color: Colors.white,
+                //   child: InkWell(
+                //     onTap: () => _onItemTapped,
+                //     child: Padding(
+                //       padding: EdgeInsets.only(top: 16.0),
+                //       child: Column(
+                //         children: <Widget>[
+                //           Icon(
+                //             Icons.home,
+                //             color: Color.fromRGBO(130, 9, 50, 1.0),
+                //           ),
+                //           Text('Home'),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
               ),
             );
@@ -232,25 +229,45 @@ class _MyAppState extends State<MyApp> {
                   alignment: Alignment.center,
                   child: _widgetOptions.elementAt(screen),
                 ),
-                bottomNavigationBar: BottomNavigationBar(
-                  items: const <BottomNavigationBarItem>[
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: 'Home',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.account_box),
-                      label: 'Suggestions',
-                    ),
-                    // BottomNavigationBarItem(
-                    //   icon: Icon(Icons.settings),
-                    //   label: 'Settings',
-                    // ),
-                  ],
-                  currentIndex: screen,
-                  selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
-                  onTap: _onItemTapped,
-                ),
+                // bottomNavigationBar: Container(
+                //   height: 75,
+                //   color: Colors.white,
+                //   child: InkWell(
+                //     onTap: () => _onItemTapped,
+                //     child: Padding(
+                //       padding: EdgeInsets.only(top: 16.0),
+                //       child: Column(
+                //         children: <Widget>[
+                //           Icon(
+                //             Icons.home,
+                //             color: Color.fromRGBO(130, 9, 50, 1.0),
+                //           ),
+                //           Text('Home'),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                //Todo: uncomment below for multi-item navbar
+                // bottomNavigationBar: BottomNavigationBar(
+                //   items: const <BottomNavigationBarItem>[
+                //     BottomNavigationBarItem(
+                //       icon: Icon(Icons.home),
+                //       label: 'Home',
+                //     ),
+                //     // BottomNavigationBarItem(
+                //     //   icon: Icon(Icons.account_box),
+                //     //   label: 'Suggestions',
+                //     // ),
+                //     // BottomNavigationBarItem(
+                //     //   icon: Icon(Icons.settings),
+                //     //   label: 'Settings',
+                //     // ),
+                //   ],
+                //   currentIndex: screen,
+                //   selectedItemColor: Color.fromRGBO(130, 9, 50, 1.0),
+                //   onTap: _onItemTapped,
+                // ),
                 backgroundColor: Color.fromRGBO(130, 9, 50, 1.0),
               ),
             );
@@ -372,69 +389,73 @@ class _ContactsPageState extends State<ContactsPage> {
             );
           }else if(_contacts.isEmpty){
             return Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
-                    child: Text(
-                      "Oops! Something went wrong.",
-                      style:
-                      TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                      textScaleFactor: 1.75,
-                      textAlign: TextAlign.center,
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, 16),
+                      child: Text(
+                        "Oops! Something went wrong.",
+                        style:
+                        TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
+                        textScaleFactor: 1.50,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Image(
-                          image: supriseMe.image,
-                          fit: BoxFit.fill,
-                        ),
-                      ],
+                    Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Image(
+                            image: supriseMe.image,
+                            fit: BoxFit.fill,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
-                          child: TextButton(
-                            onPressed: () {
-                              openAppSettings();
+                    Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
+                            child: TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  AppSettings.openAppSettings();
+                                });
                               },
-                            child: Text(
-                              "Open Settings",
-                              style:
-                              TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  color: Color.fromRGBO(130, 9, 50, 1.0)
+                              child: Text(
+                                "Open Settings",
+                                style:
+                                TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    color: Color.fromRGBO(130, 9, 50, 1.0)
+                                ),
+                                textScaleFactor: 1.50,
+                                textAlign: TextAlign.center,
                               ),
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.white)
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            child: Text(
+                              "Please give us permission to access your contacts in the settings.\n",
+                              style:
+                              TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
                               textScaleFactor: 1.50,
                               textAlign: TextAlign.center,
                             ),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(Colors.white)
-                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                          child: Text(
-                            "Please give us permission to access your contacts in the settings.\n",
-                            style:
-                            TextStyle(fontWeight: FontWeight.w700, color: Colors.white),
-                            textScaleFactor: 1.50,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           } else {
@@ -513,267 +534,287 @@ class _ContactsPageState extends State<ContactsPage> {
             String urlLaunchBodyToken = Platform.isAndroid ? "?":"&";
             Uri message = Uri.parse(", you just crossed my mind and I wanted to see how you were doing these days!");
 
-            return Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+            return SafeArea(
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Your Contact Suggestions",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Colors.white),
-                    textScaleFactor: 1.75,
-                    textAlign: TextAlign.center,
-                  ),
-                  Card(
-                    color: Colors.white,
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                    child: Flex(
+                      direction: Axis.horizontal,
                       children: [
-                        ListTile(
-                          leading: (randomContact.avatar != null &&
-                              randomContact.avatar!.isNotEmpty)
-                              ? CircleAvatar(
-                            backgroundImage:
-                            MemoryImage(randomContact.avatar!),
-                          )
-                              : CircleAvatar(
-                            child: Text(randomContact.initials()),
-                            backgroundColor:
-                            Color.fromRGBO(130, 9, 50, 1.0),
-                          ),
-                          title: Text(
-                            contactName,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textScaleFactor: 1.50,
-                          ),
-                          subtitle: Text(
-                            contactPhoneNumber,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.6)),
-                            textScaleFactor: 1.25,
+                        Expanded(
+                          child: Column(
+                            // mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              // Text(
+                              //   "Your Contact Suggestions",
+                              //   style: TextStyle(
+                              //       fontWeight: FontWeight.w700, color: Colors.white),
+                              //   textScaleFactor: 1.75,
+                              //   textAlign: TextAlign.center,
+                              // ),
+                              Card(
+                                color: Colors.white,
+                                clipBehavior: Clip.antiAlias,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      leading: (randomContact.avatar != null &&
+                                          randomContact.avatar!.isNotEmpty)
+                                          ? CircleAvatar(
+                                        backgroundImage:
+                                        MemoryImage(randomContact.avatar!),
+                                      )
+                                          : CircleAvatar(
+                                        child: Text(randomContact.initials()),
+                                        backgroundColor:
+                                        Color.fromRGBO(130, 9, 50, 1.0),
+                                      ),
+                                      title: Text(
+                                        contactName,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        textScaleFactor: 1.50,
+                                      ),
+                                      subtitle: Text(
+                                        contactPhoneNumber,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black.withOpacity(0.6)),
+                                        textScaleFactor: 1.25,
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Center(
+                                          child: contactName.contains(" ")
+                                              ? Text(
+                                            "Feel like catching up with " +
+                                                contactName.substring(
+                                                    0,
+                                                    randomContact.displayName!
+                                                        .indexOf(" ")) +
+                                                "?\n\nCheck On Them! ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                            ),
+                                            textScaleFactor: 1.25,
+                                            textAlign: TextAlign.center,
+                                          )
+                                              : Text(
+                                            "Feel like catching up with " +
+                                                contactName +
+                                                "?\n\nCheck On Them! ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                            ),
+                                            textScaleFactor: 1.25,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        )),
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+
+                                          },
+                                          child: IconButton(
+                                            onPressed: () =>
+                                                launch('tel:' + contactPhoneNumber),
+                                            icon: Icon(Icons.phone_forwarded),
+                                          ),
+                                          style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+
+                                          },
+                                          child: IconButton(
+                                            onPressed: () => contactName.contains(" ")
+                                                ? launch("sms:" +
+                                                contactPhoneNumber +
+                                                urlLaunchBodyToken +
+                                                "body=Hey%20" +
+                                                contactName.substring(
+                                                    0,
+                                                    randomContact.displayName!
+                                                        .indexOf(" "))
+                                                + message.toString())
+                                                :launch("sms:" +
+                                                contactPhoneNumber +
+                                                urlLaunchBodyToken +
+                                                "body=Hey%20" + contactName + message.toString())
+                                            ,
+                                            icon: Icon(Icons.textsms_outlined),
+                                          ),
+                                          style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
+                                  ],
+                                ),
+                              ),
+                              Card(
+                                color: Colors.white,
+                                clipBehavior: Clip.antiAlias,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ListTile(
+                                      leading: (randomContact2.avatar != null &&
+                                          randomContact2.avatar!.isNotEmpty)
+                                          ? CircleAvatar(
+                                        backgroundImage:
+                                        MemoryImage(randomContact2.avatar!),
+                                      )
+                                          : CircleAvatar(
+                                        child: Text(randomContact2.initials()),
+                                        backgroundColor:
+                                        Color.fromRGBO(130, 9, 50, 1.0),
+                                      ),
+                                      title: Text(
+                                        contactName2,
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        textScaleFactor: 1.50,
+                                      ),
+                                      subtitle: Text(
+                                        contactPhoneNumber2,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black.withOpacity(0.6)),
+                                        textScaleFactor: 1.25,
+                                      ),
+                                    ),
+                                    Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Center(
+                                          child: contactName2.contains(" ")
+                                              ? Text(
+                                            "Feel like catching up with " +
+                                                contactName2.substring(
+                                                    0,
+                                                    randomContact2.displayName!
+                                                        .indexOf(" ")) +
+                                                "?\n\nCheck On Them! ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                            ),
+                                            textScaleFactor: 1.25,
+                                            textAlign: TextAlign.center,
+                                          )
+                                              : Text(
+                                            "Feel like catching up with " +
+                                                contactName2 +
+                                                "?\n\nCheck On Them! ",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                              Color.fromRGBO(130, 9, 50, 1.0),
+                                            ),
+                                            textScaleFactor: 1.25,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        )),
+                                    ButtonBar(
+                                      alignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+
+                                          },
+                                          child: IconButton(
+                                            onPressed: () =>
+                                                launch('tel:' + contactPhoneNumber2),
+                                            icon: Icon(Icons.phone_forwarded),
+                                          ),
+                                          style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                                          ),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+
+                                          },
+                                          child: IconButton(
+                                            onPressed: () => contactName2.contains(" ")
+                                                ? launch("sms:" +
+                                                contactPhoneNumber2 +
+                                                urlLaunchBodyToken +
+                                                "body=Hey%20" +
+                                                contactName2.substring(
+                                                    0,
+                                                    randomContact2.displayName!
+                                                        .indexOf(" "))
+                                                + message.toString())
+                                                :launch("sms:" +
+                                                contactPhoneNumber2 +
+                                                urlLaunchBodyToken +
+                                                "body=Hey%20" + contactName2 + message.toString())
+                                            ,
+                                            icon: Icon(Icons.textsms_outlined),
+                                          ),
+                                          style: ButtonStyle(
+                                              foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // Image.asset('assets/card-sample-image-2.jpg'),
+                                  ],
+                                ),
+                              ),
+                              ButtonBar(
+                                alignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Center(
+                                    child:TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                        });
+                                      },
+                                      child: Text(
+                                        "More Suggestions",
+                                        style: TextStyle(
+                                          color: Color.fromRGBO(130, 9, 50, 1.0),
+                                        ),
+                                        textScaleFactor: 1.25,
+                                      ),
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                        MaterialStateProperty.all(Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Center(
-                              child: contactName.contains(" ")
-                                  ? Text(
-                                "Feel like catching up with " +
-                                    contactName.substring(
-                                        0,
-                                        randomContact.displayName!
-                                            .indexOf(" ")) +
-                                    "?\n\nCheck On Them! ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  Color.fromRGBO(130, 9, 50, 1.0),
-                                ),
-                                textScaleFactor: 1.25,
-                                textAlign: TextAlign.center,
-                              )
-                                  : Text(
-                                "Feel like catching up with " +
-                                    contactName +
-                                    "?\n\nCheck On Them! ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  Color.fromRGBO(130, 9, 50, 1.0),
-                                ),
-                                textScaleFactor: 1.25,
-                                textAlign: TextAlign.center,
-                              ),
-                            )),
-                        ButtonBar(
-                          alignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-
-                              },
-                              child: IconButton(
-                                onPressed: () =>
-                                    launch('tel:' + contactPhoneNumber),
-                                icon: Icon(Icons.phone_forwarded),
-                              ),
-                              style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-
-                              },
-                              child: IconButton(
-                                onPressed: () => contactName.contains(" ")
-                                    ? launch("sms:" +
-                                    contactPhoneNumber +
-                                    urlLaunchBodyToken +
-                                    "body=Hey%20" +
-                                    contactName.substring(
-                                        0,
-                                        randomContact.displayName!
-                                            .indexOf(" "))
-                                    + message.toString())
-                                    :launch("sms:" +
-                                    contactPhoneNumber +
-                                    urlLaunchBodyToken +
-                                    "body=Hey%20" + contactName + message.toString())
-                                ,
-                                icon: Icon(Icons.textsms_outlined),
-                              ),
-                              style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Image.asset('assets/card-sample-image-2.jpg'), Potential space for adds??
-                      ],
+                      ]
                     ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                    clipBehavior: Clip.antiAlias,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          leading: (randomContact2.avatar != null &&
-                              randomContact2.avatar!.isNotEmpty)
-                              ? CircleAvatar(
-                            backgroundImage:
-                            MemoryImage(randomContact2.avatar!),
-                          )
-                              : CircleAvatar(
-                            child: Text(randomContact2.initials()),
-                            backgroundColor:
-                            Color.fromRGBO(130, 9, 50, 1.0),
-                          ),
-                          title: Text(
-                            contactName2,
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textScaleFactor: 1.50,
-                          ),
-                          subtitle: Text(
-                            contactPhoneNumber2,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black.withOpacity(0.6)),
-                            textScaleFactor: 1.25,
-                          ),
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Center(
-                              child: contactName2.contains(" ")
-                                  ? Text(
-                                "Feel like catching up with " +
-                                    contactName2.substring(
-                                        0,
-                                        randomContact2.displayName!
-                                            .indexOf(" ")) +
-                                    "?\n\nCheck On Them! ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  Color.fromRGBO(130, 9, 50, 1.0),
-                                ),
-                                textScaleFactor: 1.25,
-                                textAlign: TextAlign.center,
-                              )
-                                  : Text(
-                                "Feel like catching up with " +
-                                    contactName2 +
-                                    "?\n\nCheck On Them! ",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  Color.fromRGBO(130, 9, 50, 1.0),
-                                ),
-                                textScaleFactor: 1.25,
-                                textAlign: TextAlign.center,
-                              ),
-                            )),
-                        ButtonBar(
-                          alignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            TextButton(
-                              onPressed: () {
-
-                              },
-                              child: IconButton(
-                                onPressed: () =>
-                                    launch('tel:' + contactPhoneNumber2),
-                                icon: Icon(Icons.phone_forwarded),
-                              ),
-                              style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-
-                              },
-                              child: IconButton(
-                                onPressed: () => contactName2.contains(" ")
-                                    ? launch("sms:" +
-                                    contactPhoneNumber2 +
-                                    urlLaunchBodyToken +
-                                    "body=Hey%20" +
-                                    contactName2.substring(
-                                        0,
-                                        randomContact2.displayName!
-                                            .indexOf(" "))
-                                    + message.toString())
-                                    :launch("sms:" +
-                                    contactPhoneNumber2 +
-                                    urlLaunchBodyToken +
-                                    "body=Hey%20" + contactName2 + message.toString())
-                                ,
-                                icon: Icon(Icons.textsms_outlined),
-                              ),
-                              style: ButtonStyle(
-                                  foregroundColor: MaterialStateProperty.all(Color.fromRGBO(130, 9, 50, 1.0))
-                              ),
-                            ),
-                          ],
-                        ),
-                        // Image.asset('assets/card-sample-image-2.jpg'),
-                      ],
-                    ),
-                  ),
-                  ButtonBar(
-                    alignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                          });
-                        },
-                        child: Text(
-                          "More Suggestions",
-                          style: TextStyle(
-                            color: Color.fromRGBO(130, 9, 50, 1.0),
-                          ),
-                          textScaleFactor: 1.25,
-                        ),
-                        style: ButtonStyle(
-                          backgroundColor:
-                          MaterialStateProperty.all(Colors.white),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              color: Color.fromRGBO(130, 9, 50, 1.0),
+                    color: Color.fromRGBO(130, 9, 50, 1.0),
+                  )
+                )
+                ]
+              )
             );
           }
         },
