@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:app_settings/app_settings.dart';
 // import 'package:settings_ui/settings_ui.dart';
 
 
@@ -26,8 +27,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   static List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
     ContactsPage(),
+    HomeScreen(),
     //TODO: implement settings page
     // SettingsListPage(title: 'Flutter Demo Home Page'),
   ];
@@ -37,9 +38,7 @@ class _MyAppState extends State<MyApp> {
   late PermissionStatus _permissionStatus;
 
   void initState() {
-    _getPermission().whenComplete(() {
       setState(() {});
-    });
     super.initState();
   }
 
@@ -75,7 +74,7 @@ class _MyAppState extends State<MyApp> {
   //future is an object that will be populated or available later
   Future<PermissionStatus> _getPermission() async {
     //specify and store the type of permission we expect to store in our permission object
-    _permissionStatus = await Permission.contacts.status;
+    _permissionStatus = await Permission.contacts.request();
     //if the permission is neither granted or denied
     if (_permissionStatus != PermissionStatus.granted) {
       //map the permission to it corresponding status
@@ -151,7 +150,10 @@ class _MyAppState extends State<MyApp> {
                               padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
                               child: TextButton(
                                 onPressed: () {
-                                  Platform.isAndroid?_onItemTapped(1):openAppSettings();
+                                  setState(() {
+                                    AppSettings.openAppSettings();
+                                    navToContacts(context, 0);
+                                  });
                                   },
                                 child: Text(
                                   "Open Settings",
@@ -401,7 +403,9 @@ class _ContactsPageState extends State<ContactsPage> {
                         Padding(
                           padding: EdgeInsets.fromLTRB(5, 16, 5, 5),
                           child: TextButton(
-                            onPressed: () { openAppSettings(); },
+                            onPressed: () {
+                              openAppSettings();
+                              },
                             child: Text(
                               "Open Settings",
                               style:
