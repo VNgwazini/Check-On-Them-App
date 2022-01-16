@@ -1,9 +1,9 @@
 # Check On Them - App
-Check On Them is a cross platform  app designed for people who struggle with keeping up with or following up with other people. Our app simply selects people from your contacts each day and gently suggests that you ‘check on them’.
+‘Check On Them!’ is a cross platform app designed for people who struggle with keeping up with or following up with other people. Our app simply selects people from your contacts and suggests that you ‘Check On Them!’.
 
-<a href="https://docs.google.com/document/d/1_YSWXWdY-kfHQ6j7_vj_ton0hrT_bRAbWfGskN0jgxM/edit?usp=sharing">Click here for more information<a>
+<a href="https://docs.google.com/document/d/1_YSWXWdY-kfHQ6j7_vj_ton0hrT_bRAbWfGskN0jgxM/edit?usp=sharing" target="_blank">Click here for more information<a>
 
-App UI (Still in early development...)
+App UI
 ---------------------
 <p float="left">
 <img src="./assets/SimulatorScreenShot_Suggestions.png" height="360" style="margin: 10px;">
@@ -14,9 +14,9 @@ App UI (Still in early development...)
 Attribution
 ---------------------
 <p float="left">
-<a href="https://www.freepik.com/photos/phone">Phone photo created by wayhomestudio - www.freepik.com</a>
+<a href="https://www.freepik.com/photos/phone" target="_blank">Phone photo created by wayhomestudio - www.freepik.com</a>
   
-<a href="https://www.freepik.com/photos/human">Human photo created by wayhomestudio - www.freepik.com</a>
+<a href="https://www.freepik.com/photos/human" target="_blank">Human photo created by wayhomestudio - www.freepik.com</a>
 </p>
   
 License
