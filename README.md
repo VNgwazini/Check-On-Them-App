@@ -6,6 +6,7 @@ Check On Them is a cross platform  app designed for people who struggle with kee
 App UI (Still in early development...)
 ---------------------
 <p float="left">
+<img src="./assets/SimulatorScreenShot_Home.png" height="360" style="margin: 10px;">
 <img src="./assets/SimulatorScreenShot_Suggestions.png" height="360" style="margin: 10px;">
 <img src="./assets/SimulatorScreenShot_Typing.png" height="360" style="margin: 10px;">
 <img src="./assets/SimulatorScreenShot_Sent.png" height="360" style="margin: 10px;">
