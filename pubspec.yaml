@@ -40,8 +40,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_name: "^0.0.1"
-  flutter_native_splash: "^0.3.2"
 
 flutter_launcher_name:
   name: "Check On Them!"
