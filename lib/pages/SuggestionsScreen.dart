@@ -5,6 +5,8 @@ import 'dart:math';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:app_settings/app_settings.dart';
+import 'package:remove_emoji/remove_emoji.dart';
+
 
 class SuggestionsScreen extends StatefulWidget {
   @override
@@ -49,6 +51,7 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
           }else if(_contacts.isEmpty){
             return OopsNoContacts();
           } else {
+            var remove = RemoveEmoji();
             var random = new Random();
             var randomInt1 = random.nextInt(_contacts.length);
             var randomInt2 = random.nextInt(_contacts.length);
@@ -99,11 +102,11 @@ class _SuggestionsScreenState extends State<SuggestionsScreen> {
               }
             }
 
-            String contactName = randomContact.displayName.toString();
+            String contactName = remove.removemoji(randomContact.displayName.toString());
             String contactPhoneNumber =
             randomContact.phones!.first.value.toString();
 
-            String contactName2 = randomContact2.displayName.toString();
+            String contactName2 = remove.removemoji(randomContact2.displayName.toString());
             String contactPhoneNumber2 =
             randomContact2.phones!.first.value.toString();
 
