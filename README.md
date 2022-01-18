@@ -8,7 +8,7 @@ App UI
 <p float="left">
 <img src="./screenshots/SimulatorScreenShot_Suggestions.png" height="360" style="margin: 10px;">
 <img src="./screenshots/SimulatorScreenShot_Typing.png" height="360" style="margin: 10px;">
-<img src="./screenshots/SimulatorScreenShot_Sent.png" height="360" style="margin: 10px;">
+<img src="./screenshots/SimulatorScreenShot_Splash.png" height="360" style="margin: 10px;">
 </p>
   
 Attribution
